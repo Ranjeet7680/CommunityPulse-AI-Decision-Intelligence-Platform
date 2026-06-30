@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafe;
+  --foreground: #1e293b;
+  --card: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(26, 115, 232, 0.08);
+  --border: #e2e8f0;
+  
+  --primary: #1A73E8;
+  --primary-rgb: 26, 115, 232;
+  --success: #34A853;
+  --warning: #FBBC04;
+  --danger: #EA4335;
+  
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  
+  --radius-xl: 20px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(26, 115, 232, 0.06);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] {
+  --background: #0b1329;
+  --foreground: #f1f5f9;
+  --card: rgba(15, 23, 42, 0.8);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --border: #1e293b;
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.3);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Onboarding step transitions */
+.step-dot.active {
+  background: var(--primary);
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.2);
+}
+.step-dot.done {
+  background: var(--success);
+}
+.step-line.done {
+  background: var(--success);
+}
+
+/* Pulse indicator animation */
+@keyframes pulse-glow {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(0.95); opacity: 0.5; }
+}
+
+.glow-indicator {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
