@@ -172,7 +172,7 @@ function navigateTo(view) {
   });
   const target = $(`#view-${view}`);
   if (target) {
-    target.style.display = 'flex';
+    target.style.display = 'block';
     target.classList.add('active');
     setTimeout(() => renderView(view), 50);
   }
