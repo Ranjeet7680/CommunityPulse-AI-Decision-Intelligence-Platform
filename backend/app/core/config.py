@@ -23,12 +23,15 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    # App Settings
     APP_NAME: str = "CommunityPulse AI Backend"
     APP_VERSION: str = "1.0.0"
     APP_ENV: str = "development"
     DEBUG: bool = True
-    SECRET_KEY: str = "supersecretkey"
+    SECRET_KEY: str = Field(
+        default="dev-secret-key-change-in-production-min-32-chars-required",
+        min_length=32, 
+        description="JWT secret key - MUST be changed in production"
+    )
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
@@ -94,6 +97,18 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.APP_ENV == "production"
+    
+    def model_post_init(self, __context):
+        """Validate production settings"""
+        if self.is_production:
+            if self.SECRET_KEY == "dev-secret-key-change-in-production-min-32-chars-required":
+                raise ValueError(
+                    "SECRET_KEY must be changed from default value in production! "
+                    "Set it via environment variable or .env file."
+                )
+            if self.DEBUG:
+                import warnings
+                warnings.warn("DEBUG mode is enabled in production - this is not recommended!")
 
 # Global Config Singleton
 settings = Settings()

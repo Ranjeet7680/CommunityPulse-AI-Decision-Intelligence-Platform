@@ -1,0 +1,18 @@
+- `[x]` Implement core Design System and CSS variables in `app.css`
+- `[x]` Add responsive padding overrides for auth card and referral panel on mobile devices
+- `[x]` Redesign onboarding cards (Step 1, 2, and 3) with theme-aware glassmorphic styling
+- `[x]` Make onboarding input, select, connector cards, and code tips fully glassmorphic and premium
+- `[x]` Add advanced micro-interactions (magnetic hover, confetti, skeletal loaders) in `app.css` and `app.js`
+- `[x]` Embed Command Palette and Keyboard Shortcuts sheet inside `index.html` and `app.js`
+- `[x]` Build dynamic Onboarding walkthrough tour overlay and helper logic
+- `[x]` Write drag-and-drop dashboard panel customization and local state storage in `app.js`
+- `[x]` Add offline detection, custom validations, and modern Toast notifications queue in `app.js`
+- `[x]` Modify `api-config.js` BASE_URL to dynamically handle local development vs. production Vercel environments
+- `[x]` Update root `vercel.json` with builds and routes to run FastAPI backend as serverless python function alongside static frontend assets
+- `[x]` Dynamicize referral sharing link generation (replacing hardcoded prototype URLs with current domain origins)
+- `[x]` Resolve launch script port mismatch between `start.bat` and `QUICKSTART.bat` using browser port auto-detection
+- `[x]` Align accessibility landmarks, aria-labels, and visible focus outline overrides
+- `[x]` Implement client-side telemetry caching and chart optimizations in `app.js`
+- `[x]` Integrate user Authentication (login/signup/profile) with backend in `app.js`
+- `[x]` Integrate AI Chat Assistant with backend `/api/v1/ai/chat` in `app.js`
+- `[ ]` Add "Uploaded Datasets" panel to Data Explorer in `index.html`

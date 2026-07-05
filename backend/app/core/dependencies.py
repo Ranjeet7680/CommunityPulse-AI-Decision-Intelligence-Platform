@@ -63,22 +63,22 @@ def get_gcs_client():
     return MagicMock()
 
 def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
-    if not token:
-        # For easy hackathon presentation/testing, if no token, return demo user
-        return {
-            "user_id": "demo_user_123",
-            "email": "ranjeet@communitypulse.ai",
-            "name": "Ranjeet Kumar",
-            "org_id": "demo_org_123",
-            "role": "admin",
-            "is_active": True
-        }
+    from fastapi import HTTPException, status
+    from app.core.security import decode_access_token
     
-    payload = verify_token(token)
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Decode and validate JWT token
+    payload = decode_access_token(token)
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
+            detail="Invalid authentication credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
@@ -89,17 +89,20 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
     db = get_db_client()
     users = db.setdefault("users", {})
     user = users.get(user_id)
+    
     if not user:
-        # Auto-create user in mock db
-        user = {
-            "user_id": user_id,
-            "email": "user@communitypulse.ai",
-            "name": "Mock User",
-            "org_id": "demo_org_123",
-            "role": role,
-            "is_active": True
-        }
-        users[user_id] = user
+        # User not found in database
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    if not user.get("is_active", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User account is inactive"
+        )
         
     return user
 

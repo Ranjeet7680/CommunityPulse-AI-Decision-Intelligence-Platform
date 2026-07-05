@@ -14,14 +14,31 @@ async def upload_dataset(
     current_user: dict = Depends(get_current_user), 
     db = Depends(get_db_client)
 ):
-    if not file.filename.endswith(('.csv', '.xlsx', '.json')):
-        raise HTTPException(status_code=400, detail="Only CSV, Excel, or JSON files are supported")
+    # Validate file type
+    allowed_extensions = ('.csv', '.xlsx', '.json')
+    if not file.filename.endswith(allowed_extensions):
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Only {', '.join(allowed_extensions)} files are supported"
+        )
+    
+    # Validate file size (max 50MB)
+    MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File size exceeds maximum limit of {MAX_FILE_SIZE // (1024*1024)}MB"
+        )
+    
+    # Validate file is not empty
+    if len(content) == 0:
+        raise HTTPException(status_code=400, detail="Empty file provided")
         
     datasets = db.setdefault("datasets", {})
     dataset_id = f"ds_{uuid.uuid4().hex[:10]}"
     
-    # Read first couple of bytes to validate schema/dataframe preview
-    content = await file.read()
+    # Parse and validate file content
     df = None
     try:
         if file.filename.endswith('.csv'):
@@ -30,9 +47,18 @@ async def upload_dataset(
             df = pd.read_excel(io.BytesIO(content), nrows=100)
         elif file.filename.endswith('.json'):
             df = pd.read_json(io.BytesIO(content))
+            
+        # Validate dataframe is not empty
+        if df is None or df.empty:
+            raise ValueError("File contains no data")
+            
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Failed to parse file: {str(e)}")
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Failed to parse file: {str(e)}"
+        )
         
+    # Extract schema
     schema_fields = {}
     if df is not None:
         for col in df.columns:
@@ -51,8 +77,10 @@ async def upload_dataset(
         "status": "completed"
     }
     
-    # Save file contents dynamically to mock database for preview/query endpoints
-    db.setdefault("datasets_data", {})[dataset_id] = df.to_dict(orient="records") if df is not None else []
+    # Save file contents for preview/query endpoints
+    db.setdefault("datasets_data", {})[dataset_id] = (
+        df.to_dict(orient="records") if df is not None else []
+    )
     
     return DatasetUploadResponse(
         dataset_id=dataset_id,

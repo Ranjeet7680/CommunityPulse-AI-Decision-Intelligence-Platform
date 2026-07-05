@@ -61,7 +61,7 @@ interface AppState {
   setTab: (tab: string) => void;
   setStep: (step: number) => void;
   toggleTheme: () => void;
-  login: (email: string, name: string) => void;
+  login: (email: string, name: string, uid?: string) => void;
   logout: () => void;
   updateOrg: (name: string, industry: string, country: string) => void;
   applyPromoCode: (code: string) => { success: boolean; reward: number; msg: string };
@@ -110,9 +110,9 @@ export const useStore = create<AppState>((set, get) => ({
     return { theme: nextTheme };
   }),
   
-  login: (email, name) => set({
+  login: (email, name, uid) => set({
     user: {
-      uid: 'user_' + Math.random().toString(36).substr(2, 9),
+      uid: uid || 'user_' + Math.random().toString(36).substr(2, 9),
       email,
       name,
       orgId: 'org_demo',

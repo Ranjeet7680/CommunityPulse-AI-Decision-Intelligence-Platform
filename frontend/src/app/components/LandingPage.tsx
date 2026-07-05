@@ -10,10 +10,26 @@ import {
 export default function LandingPage() {
   const { setView } = useStore();
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+
+      // ScrollSpy
+      const sections = ['hero', 'solutions', 'features', 'pricing', 'faq', 'contact'];
+      const scrollPosition = window.scrollY + 120;
+
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(section);
+          }
+        }
+      }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -58,11 +74,11 @@ export default function LandingPage() {
           </div>
           
           <div className="hidden md:flex items-center gap-8 font-medium text-slate-600 dark:text-slate-400 text-sm">
-            <a href="#solutions" className="hover:text-blue-600 transition-colors">Solutions</a>
-            <a href="#features" className="hover:text-blue-600 transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-blue-600 transition-colors">Pricing</a>
-            <a href="#faq" className="hover:text-blue-600 transition-colors">FAQ</a>
-            <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
+            <a href="#solutions" className={`hover:text-blue-600 transition-colors ${activeSection === 'solutions' ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}`}>Solutions</a>
+            <a href="#features" className={`hover:text-blue-600 transition-colors ${activeSection === 'features' ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}`}>Features</a>
+            <a href="#pricing" className={`hover:text-blue-600 transition-colors ${activeSection === 'pricing' ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}`}>Pricing</a>
+            <a href="#faq" className={`hover:text-blue-600 transition-colors ${activeSection === 'faq' ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}`}>FAQ</a>
+            <a href="#contact" className={`hover:text-blue-600 transition-colors ${activeSection === 'contact' ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}`}>Contact</a>
           </div>
 
           <div className="flex items-center gap-3">
@@ -77,7 +93,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-36 pb-20 px-6 max-w-7xl mx-auto">
+      <section id="hero" className="pt-36 pb-20 px-6 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-8">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/30 text-blue-700 dark:text-blue-400 font-semibold text-xs tracking-wider uppercase">
@@ -136,7 +152,7 @@ export default function LandingPage() {
       </section>
 
       {/* Tech Partners Section */}
-      <section className="bg-white dark:bg-slate-900/50 border-y border-slate-100 dark:border-slate-850 py-16">
+      <section id="solutions" className="bg-white dark:bg-slate-900/50 border-y border-slate-100 dark:border-slate-850 py-16">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
           {techPartners.map((partner, i) => {
             const Icon = partner.icon;
@@ -236,7 +252,7 @@ export default function LandingPage() {
         {testimonials.map((test, i) => (
           <div key={i} className="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 shadow-sm relative space-y-6">
             <div className="flex gap-1 text-amber-500"><Star className="w-5 h-5 fill-current" /><Star className="w-5 h-5 fill-current" /><Star className="w-5 h-5 fill-current" /><Star className="w-5 h-5 fill-current" /><Star className="w-5 h-5 fill-current" /></div>
-            <p className="text-slate-600 dark:text-slate-450 italic">"{test.quote}"</p>
+            <p className="text-slate-600 dark:text-slate-450 italic">&ldquo;{test.quote}&rdquo;</p>
             <div>
               <h4 className="font-bold text-slate-900 dark:text-white">{test.author}</h4>
               <p className="text-xs text-slate-400">{test.role}</p>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Blog Hub | CommunityPulse AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "outline": "#727785",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005320",
+                        "primary-fixed-dim": "#adc7ff",
+                        "surface-variant": "#e0e2ec",
+                        "primary": "#005bbf",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2d3038",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#006e2c",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#86f898",
+                        "surface-dim": "#d8d9e3",
+                        "on-secondary-container": "#00722f",
+                        "surface-container-highest": "#e0e2ec",
+                        "on-tertiary-container": "#ffffff",
+                        "secondary-fixed-dim": "#6ddd81",
+                        "inverse-primary": "#adc7ff",
+                        "on-surface-variant": "#414754",
+                        "on-secondary-fixed": "#002108",
+                        "tertiary-container": "#987000",
+                        "primary-container": "#1a73e8",
+                        "inverse-on-surface": "#eff0fa",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c1c6d6",
+                        "on-primary-fixed": "#001a41",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#005bc0",
+                        "tertiary": "#795900",
+                        "surface-container-low": "#f2f3fd",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#fbbc05",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-fixed": "#d8e2ff",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#89fa9b",
+                        "surface-container": "#ecedf7",
+                        "on-surface": "#191c23",
+                        "tertiary-fixed": "#ffdfa0",
+                        "background": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "on-primary-fixed-variant": "#004493",
+                        "on-background": "#191c23"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "header-height": "64px",
+                        "gutter": "24px",
+                        "container-padding": "32px",
+                        "unit": "4px",
+                        "nav-rail-width": "72px"
+                    },
+                    "fontFamily": {
+                        "title-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Hanken Grotesk', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px -5px rgba(0, 91, 191, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-40 w-full h-header-height bg-surface-container-lowest/80 backdrop-blur-xl border-b border-white/10 px-container-padding flex justify-between items-center shadow-sm">
+    <div class="flex items-center gap-8">
+        <a href="index.html" class="font-headline-md text-headline-md font-bold text-primary">CommunityPulse AI</a>
+        <nav class="hidden md:flex gap-6">
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="index.html">Platform</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="about.html">About Us</a>
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="blog.html">Blog Hub</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="careers.html">Careers</a>
+        </nav>
+    </div>
+    <div class="flex items-center gap-4">
+        <div class="relative group">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-outline">
+                <span class="material-symbols-outlined text-[20px]">search</span>
+            </span>
+            <input id="blog-search" class="bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search articles..." type="text"/>
+        </div>
+        <span class="material-symbols-outlined text-outline cursor-pointer hover:bg-primary/5 p-2 rounded-lg transition-all" onclick="location.href='index.html'">home</span>
+    </div>
+</header>
+
+<main class="min-h-screen">
+    <!-- Blog Hero / Featured Post -->
+    <section class="p-container-padding">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative w-full h-[500px] rounded-3xl overflow-hidden shadow-2xl group">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDPvDucZMMdgAMYHeW0twnPF0-shAhoFpQe72VaVhAs-cTWzCQ-3OTs7AQgSsohCWkxvKMHVLn2d8-eqOA_s5Px-yjEEDmSFZdPow0mJSHsfpm0_FGgo7HWHssS4ttC501EuHTiJ4H7uptwsG-UesedQWSITSZ-T5WZrBxSpytAgNhmHJIqNoMzBNsygtBurtDE3s01fcyYEnj-driyTfPS-4JZCXKzXDM35YmU1YiKTSmpKiwyIVl0gHdL633CGiRVA7jTeCMJseU')"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 p-12 w-full lg:w-2/3">
+                    <span class="inline-block bg-primary-container text-white px-4 py-1 rounded-full text-label-md font-label-md mb-6 uppercase tracking-wider bg-blue-600">Featured Insight</span>
+                    <h2 class="font-display-lg text-display-lg text-white mb-4 leading-tight">The Future of AI-Driven Community Governance</h2>
+                    <p class="text-white/80 font-body-lg text-body-lg mb-8 max-w-2xl">Discover how CommunityPulse AI is revolutionizing local governance by turning raw data into actionable community empathy through advanced neural auditing.</p>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-3">
+                            <img class="w-12 h-12 rounded-full border-2 border-white/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpQVc5aisw5T34cj1v-8HTgtAhOvLfqjL5AN3FegcpIdh8_u67P0IuPTYhIQj7j2d5J6fqi-j4TZNJ4ZJdFrB-YadMA__RCwyLJfOWyovRezErNeoWxGeQa6cPUZUYNlojYJajyJ3LypOwKw7FlmSiAWHS8qb-VznVsGVfLKTHxNROMcK3mJJp4NinKI4m481-WgLyMH_7cP_HjYsDAXnDSXE6HzESt_gHh_DOs03HJas-YKUV_vGrILoFMd6oB8jbPGgsDUqohVs" alt="Dr. Aris Thorne"/>
+                            <div>
+                                <p class="text-white font-bold font-body-md text-body-md">Dr. Aris Thorne</p>
+                                <p class="text-white/60 font-label-md text-label-md">Chief Research Officer</p>
+                            </div>
+                        </div>
+                        <div class="h-8 w-px bg-white/20"></div>
+                        <div class="text-white/80 font-label-md text-label-md flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                            May 14, 2024
+                        </div>
+                        <div class="text-white/80 font-label-md text-label-md flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">schedule</span>
+                            12 min read
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter Bar -->
+    <section class="px-container-padding py-6 sticky top-header-height z-30 bg-background/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex flex-wrap gap-3 id-filters">
+                <button class="filter-btn active px-6 py-2 rounded-full bg-primary text-white font-bold text-body-md shadow-lg shadow-primary/20 transition-all" data-category="all">All Articles</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-white text-on-surface-variant hover:bg-surface-container-high transition-all font-medium text-body-md border border-outline-variant/20" data-category="ai-research">AI Research</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-white text-on-surface-variant hover:bg-surface-container-high transition-all font-medium text-body-md border border-outline-variant/20" data-category="community">Community Impact</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-white text-on-surface-variant hover:bg-surface-container-high transition-all font-medium text-body-md border border-outline-variant/20" data-category="updates">Product Updates</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="px-container-padding pb-20">
+        <div id="blog-grid" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1: AI Research -->
+            <article class="blog-card glass-panel rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group" data-category="ai-research">
+                <div class="relative h-56 overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-6xl opacity-20">psychology</span>
+                    <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-label-md font-label-md">AI Research</div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="font-headline-md text-headline-md mb-3 group-hover:text-primary transition-colors">Decoding Local Sentiment with Transformer Models</h3>
+                    <p class="text-on-surface-variant text-body-md mb-6 line-clamp-3">How our latest community-tuned LLM architectures are identifying nuances in local feedback that standard models miss completely.</p>
+                    <div class="mt-auto">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center font-bold text-xs text-primary">MC</div>
+                            <span class="text-body-md font-medium">Marcus Chen</span>
+                        </div>
+                        <div class="flex justify-between items-center text-label-md text-outline">
+                            <span>May 12, 2024</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 8 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 2: Community Impact -->
+            <article class="blog-card glass-panel rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group" data-category="community">
+                <div class="relative h-56 overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-6xl opacity-20">diversity_3</span>
+                    <div class="absolute top-4 left-4 bg-emerald-600 text-white px-3 py-1 rounded-full text-label-md font-label-md">Community Impact</div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="font-headline-md text-headline-md mb-3 group-hover:text-primary transition-colors">Empowering 12 Neighborhoods in Neo-Brooklyn</h3>
+                    <p class="text-on-surface-variant text-body-md mb-6 line-clamp-3">A case study on how real-time sentiment analysis helped local leaders allocate $40M in infrastructure funds to high-priority zones.</p>
+                    <div class="mt-auto">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center font-bold text-xs text-secondary">SJ</div>
+                            <span class="text-body-md font-medium">Sarah Jenkins</span>
+                        </div>
+                        <div class="flex justify-between items-center text-label-md text-outline">
+                            <span>May 10, 2024</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 15 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 3: Product Update -->
+            <article class="blog-card glass-panel rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group" data-category="updates">
+                <div class="relative h-56 overflow-hidden bg-gradient-to-br from-amber-500 to-red-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-6xl opacity-20">phone_iphone</span>
+                    <div class="absolute top-4 left-4 bg-amber-600 text-white px-3 py-1 rounded-full text-label-md font-label-md">Product Updates</div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="font-headline-md text-headline-md mb-3 group-hover:text-primary transition-colors">Introducing 'Pulse' Mobile App 2.0</h3>
+                    <p class="text-on-surface-variant text-body-md mb-6 line-clamp-3">The ultimate community monitoring tool now in your pocket. Optimized for low-latency alerts and offline GIS data syncing.</p>
+                    <div class="mt-auto">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center font-bold text-xs text-amber-700">SC</div>
+                            <span class="text-body-md font-medium">Sarah Chen</span>
+                        </div>
+                        <div class="flex justify-between items-center text-label-md text-outline">
+                            <span>May 05, 2024</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 6 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 4: AI Research -->
+            <article class="blog-card glass-panel rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group" data-category="ai-research">
+                <div class="relative h-56 overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-900 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-6xl opacity-20">balance</span>
+                    <div class="absolute top-4 left-4 bg-purple-600 text-white px-3 py-1 rounded-full text-label-md font-label-md">AI Research</div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="font-headline-md text-headline-md mb-3 group-hover:text-primary transition-colors">Algorithmic Fairness in Public Sector Allocation</h3>
+                    <p class="text-on-surface-variant text-body-md mb-6 line-clamp-3">A mathematical framework for auditing resource allocation algorithms to protect vulnerable communities from spatial neglect.</p>
+                    <div class="mt-auto">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center font-bold text-xs text-purple-700">JT</div>
+                            <span class="text-body-md font-medium">Dr. Julian Thorne</span>
+                        </div>
+                        <div class="flex justify-between items-center text-label-md text-outline">
+                            <span>Apr 28, 2024</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 10 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 5: Community Impact -->
+            <article class="blog-card glass-panel rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group" data-category="community">
+                <div class="relative h-56 overflow-hidden bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-6xl opacity-20">traffic</span>
+                    <div class="absolute top-4 left-4 bg-teal-600 text-white px-3 py-1 rounded-full text-label-md font-label-md">Community Impact</div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="font-headline-md text-headline-md mb-3 group-hover:text-primary transition-colors">Dhanbad Traffic Signal Optimization Case</h3>
+                    <p class="text-on-surface-variant text-body-md mb-6 line-clamp-3">How Dhanbad municipality used our predictive GIS models to redesign municipal signal cycles, reducing commute wait times by 32%.</p>
+                    <div class="mt-auto">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center font-bold text-xs text-teal-700">EV</div>
+                            <span class="text-body-md font-medium">Elena Vance</span>
+                        </div>
+                        <div class="flex justify-between items-center text-label-md text-outline">
+                            <span>Apr 18, 2024</span>
+                            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 9 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-container-padding">
+        <div class="max-w-7xl mx-auto bg-inverse-surface text-white rounded-[32px] p-12 md:p-20 relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+                <h2 class="font-display-lg text-display-lg mb-6 leading-tight">Stay updated with the latest community insights</h2>
+                <p class="font-body-lg text-body-lg text-white/70 mb-10">Get ethical AI research and case studies delivered straight to your inbox monthly.</p>
+                <div class="flex flex-wrap gap-4">
+                    <input type="email" placeholder="Enter your email" class="px-6 py-4 rounded-xl text-on-surface bg-white w-64 border-none focus:ring-2 focus:ring-primary"/>
+                    <button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-body-lg text-body-lg hover:brightness-110 transition-all" onclick="alert('Successfully subscribed to Newsletter!')">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-background dark:bg-background relative w-full py-gutter border-t border-outline-variant/20">
+    <div class="max-w-7xl mx-auto px-container-padding flex flex-wrap justify-between items-center gap-4">
+        <div class="flex flex-col gap-2">
+            <span class="font-label-md text-label-md font-bold text-on-surface">CommunityPulse AI</span>
+            <p class="font-body-md text-body-md text-on-surface-variant/60">© 2024 CommunityPulse AI. The Intelligent Auditor.</p>
+        </div>
+        <div class="flex gap-6">
+            <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Privacy Policy</a>
+            <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Terms of Service</a>
+            <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">API Docs</a>
+            <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Support</a>
+            <span class="font-label-md text-label-md text-on-surface-variant/40">v2.4.1</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.blog-card');
+        const searchInput = document.getElementById('blog-search');
+
+        // Categories Filtering
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => {
+                    b.classList.remove('active', 'bg-primary', 'text-white', 'shadow-lg', 'shadow-primary/20');
+                    b.classList.add('bg-white', 'text-on-surface-variant');
+                });
+                btn.classList.add('active', 'bg-primary', 'text-white', 'shadow-lg', 'shadow-primary/20');
+                btn.classList.remove('bg-white', 'text-on-surface-variant');
+
+                const cat = btn.getAttribute('data-category');
+                filterCards(cat, searchInput.value.toLowerCase());
+            });
+        });
+
+        // Search Filtering
+        searchInput.addEventListener('input', (e) => {
+            const activeBtn = document.querySelector('.filter-btn.active');
+            const cat = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+            filterCards(cat, e.target.value.toLowerCase());
+        });
+
+        function filterCards(category, query) {
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                const matchesCat = (category === 'all' || cardCat === category);
+                const matchesSearch = (title.includes(query) || description.includes(query));
+
+                if (matchesCat && matchesSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

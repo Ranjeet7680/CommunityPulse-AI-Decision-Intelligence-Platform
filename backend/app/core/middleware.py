@@ -30,34 +30,41 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
-        # Rate limit skip on docs
-        if request.url.path in ["/docs", "/redoc", "/openapi.json", "/health"]:
+        # Skip rate limiting on health checks, docs, and metrics
+        exempt_paths = ["/docs", "/redoc", "/openapi.json", "/health", "/metrics"]
+        if request.url.path in exempt_paths:
             return await call_next(request)
             
-        client = get_redis_client()
         client_ip = request.client.host if request.client else "unknown"
         key = f"rate_limit:{client_ip}"
         
         try:
+            client = get_redis_client()
             current = client.get(key)
-            if current and int(current) >= settings.RATE_LIMIT_REQUESTS:
-                return Response(
-                    content='{"detail": "Rate limit exceeded. Try again in a minute."}',
-                    status_code=429,
-                    media_type="application/json"
-                )
             
-            # Increment request counter
-            if not current:
-                client.set(key, 1, ex=settings.RATE_LIMIT_WINDOW)
-            else:
-                # Basic mock/fallback support
-                if hasattr(client, 'db'): # Mock client
-                    client.set(key, int(current) + 1, ex=settings.RATE_LIMIT_WINDOW)
-                else: # Real redis client
+            if current:
+                current_count = int(current)
+                if current_count >= settings.RATE_LIMIT_REQUESTS:
+                    logger.warning(f"Rate limit exceeded for IP: {client_ip}")
+                    return Response(
+                        content='{"detail": "Rate limit exceeded. Try again in a minute."}',
+                        status_code=429,
+                        media_type="application/json",
+                        headers={"Retry-After": str(settings.RATE_LIMIT_WINDOW)}
+                    )
+                
+                # Increment counter
+                if hasattr(client, 'db'):  # Mock client
+                    client.set(key, current_count + 1, ex=settings.RATE_LIMIT_WINDOW)
+                else:  # Real Redis client
                     client.incr(key)
+            else:
+                # First request from this IP in the window
+                client.set(key, 1, ex=settings.RATE_LIMIT_WINDOW)
+                
         except Exception as e:
-            # Fallback gracefully if redis hits a glitch
-            logger.warning(f"Rate limiting error: {e}")
+            # Fallback gracefully if Redis is unavailable
+            logger.warning(f"Rate limiting unavailable (Redis error): {e}")
+            # Continue processing request even if rate limiting fails
             
         return await call_next(request)

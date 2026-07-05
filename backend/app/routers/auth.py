@@ -18,16 +18,31 @@ async def register(data: RegisterRequest, db = Depends(get_db_client)):
     users = db.setdefault("users", {})
     orgs = db.setdefault("organizations", {})
     
+    # Validate email format
+    if "@" not in data.email or "." not in data.email.split("@")[1]:
+        raise HTTPException(status_code=400, detail="Invalid email format")
+    
+    # Validate password strength (minimum 8 characters)
+    if len(data.password) < 8:
+        raise HTTPException(
+            status_code=400, 
+            detail="Password must be at least 8 characters long"
+        )
+    
     # Check if user already exists
     for uid, u in users.items():
-        if u["email"] == data.email:
+        if u["email"].lower() == data.email.lower():
             raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Validate organization name
+    if not data.org_name or len(data.org_name.strip()) == 0:
+        raise HTTPException(status_code=400, detail="Organization name is required")
             
     # Create Organization first
     org_id = f"org_{uuid.uuid4().hex[:10]}"
     orgs[org_id] = {
         "org_id": org_id,
-        "name": data.org_name,
+        "name": data.org_name.strip(),
         "industry": "General",
         "country": "India",
         "owner_id": "",
@@ -42,9 +57,9 @@ async def register(data: RegisterRequest, db = Depends(get_db_client)):
     
     users[user_id] = {
         "user_id": user_id,
-        "email": data.email,
+        "email": data.email.lower().strip(),
         "password_hash": get_password_hash(data.password),
-        "name": data.name,
+        "name": data.name.strip(),
         "org_id": org_id,
         "role": "admin",
         "referral_code": referral_code,
@@ -67,14 +82,34 @@ async def register(data: RegisterRequest, db = Depends(get_db_client)):
 async def login(data: LoginRequest, db = Depends(get_db_client)):
     users = db.setdefault("users", {})
     
+    # Normalize email for comparison
+    email = data.email.lower().strip()
+    
     target_user = None
     for uid, u in users.items():
-        if u["email"] == data.email:
+        if u["email"].lower() == email:
             target_user = u
             break
-            
-    if not target_user or not verify_password(data.password, target_user.get("password_hash", "")):
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
+    
+    if not target_user:
+        # Don't reveal whether email exists
+        raise HTTPException(
+            status_code=400, 
+            detail="Incorrect email or password"
+        )
+    
+    if not target_user.get("is_active", False):
+        raise HTTPException(
+            status_code=403,
+            detail="Account is inactive. Please contact support."
+        )
+    
+    # Verify password
+    if not verify_password(data.password, target_user.get("password_hash", "")):
+        raise HTTPException(
+            status_code=400, 
+            detail="Incorrect email or password"
+        )
         
     access_token = create_access_token(target_user["user_id"], role=target_user["role"])
     refresh_token = create_refresh_token(target_user["user_id"])

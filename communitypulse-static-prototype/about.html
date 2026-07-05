@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About Us | CommunityPulse AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 91, 191, 0.1);
+        }
+        .inner-glow {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 1);
+        }
+        .timeline-gradient {
+            background: linear-gradient(180deg, #005bbf 0%, #1a73e8 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "outline": "#727785",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005320",
+                        "primary-fixed-dim": "#adc7ff",
+                        "surface-variant": "#e0e2ec",
+                        "primary": "#005bbf",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2d3038",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#006e2c",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#86f898",
+                        "surface-dim": "#d8d9e3",
+                        "on-secondary-container": "#00722f",
+                        "surface-container-highest": "#e0e2ec",
+                        "on-tertiary-container": "#ffffff",
+                        "secondary-fixed-dim": "#6ddd81",
+                        "inverse-primary": "#adc7ff",
+                        "on-surface-variant": "#414754",
+                        "on-secondary-fixed": "#002108",
+                        "tertiary-container": "#987000",
+                        "primary-container": "#1a73e8",
+                        "inverse-on-surface": "#eff0fa",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c1c6d6",
+                        "on-primary-fixed": "#001a41",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#005bc0",
+                        "tertiary": "#795900",
+                        "surface-container-low": "#f2f3fd",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#fbbc05",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-fixed": "#d8e2ff",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#89fa9b",
+                        "surface-container": "#ecedf7",
+                        "on-surface": "#191c23",
+                        "tertiary-fixed": "#ffdfa0",
+                        "background": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "on-primary-fixed-variant": "#004493",
+                        "on-background": "#191c23"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "header-height": "64px",
+                        "gutter": "24px",
+                        "container-padding": "32px",
+                        "unit": "4px",
+                        "nav-rail-width": "72px"
+                    },
+                    "fontFamily": {
+                        "title-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 dark:bg-inverse-surface/80 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm border-b border-white/10 flex justify-between items-center h-header-height px-container-padding w-full">
+<div class="flex items-center gap-8">
+<a href="index.html" class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">CommunityPulse AI</a>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="index.html">Solutions</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="about.html">About Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="index.html">Impact</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="index.html">Contact</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-1 border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-48" placeholder="Search insights..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-primary/5 p-2 rounded-lg cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-primary/5 p-2 rounded-lg cursor-pointer">help</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a high-level executive woman with a friendly, intelligent expression. She is set against a clean, blurred office background with soft daylighting and professional attire. The image adheres to a minimalist corporate aesthetic with cool tones and high clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPSCVogf6JH3wragZcPkXf9-R9HUdlc_9Gz5aE-faW9wnaoONyum0sX62yn5p_LnUijvWXimcwtGDeQSFjsSH46QR8qOOAeBO0nzXypl_rTj4g3ODy4FRuNcwUCltq5VzjvkD9M5hXr6glk-LNq2h5cCHyaA3Lyp1F8Vyoi6YtCqCXgSU36C_8BbBR59WJgPQKX4jYLySu24UWhVKtUzSZqTvUava2rzb-Z63xp7TGc1eiso7mO5PeCv6IV0bsUf8aVCmMQW8Dyrg"/>
+</div>
+</div>
+</header>
+<main class="relative">
+<!-- Hero Section -->
+<section class="relative pt-24 pb-32 px-container-padding overflow-hidden">
+
+<div class="max-w-5xl mx-auto text-center relative z-10">
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest mb-4 block">The Intelligent Auditor</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 leading-tight">Empowering Communities Through <span class="text-primary">Layered Intelligence</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    We bridge the gap between complex data and community action. CommunityPulse AI transforms raw urban signals into actionable roadmaps for a more resilient and equitable future.
+                </p>
+</div>
+</section>
+<!-- Mission Bento Grid -->
+<section class="px-container-padding pb-24">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Mission Card -->
+<div class="md:col-span-8 glass-panel rounded-[20px] p-10 flex flex-col justify-between min-h-[400px] inner-glow">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-6">Our Mission</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                            To democratize high-fidelity AI auditing for local governments and community organizations. We believe that the power to interpret data should belong to those it affects most. Our platform provides the 'Intelligent Auditor'—a calm, capable presence that ensures every community decision is backed by ethical, data-driven insights.
+                        </p>
+</div>
+<div class="flex items-center gap-4 mt-8">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-white bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young male software engineer specializing in ethical AI, wearing a modern charcoal sweater. The setting is a bright, high-tech lab with subtle blue lighting and clean lines. Professional and focused atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT14L_JgnyubdK2jRj5gMkyvaaludefh5goHeVJABrW7CNfvdJ2673ZEAtpbo5uvpBybD5MeD3LvdecC4wd_T1Q1m_o3CWAKbOXpiNbwsBtP6iMDrbFQ2YkwinvjFYRypyj3YJHzpH1EcMyTyBYmtO-eq3Ylmb9U68G2UA8wQwMPdeLup_vN6_DDN48JtsyPgUYSjMtd50uJ-oeboN3TlhbYl74yKQcxZU3K4rMNGvrBH_BqDDt83mHPsTcXqj5DAIZ2YaAnBKaWw"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a female data scientist with glasses, looking thoughtfully at a monitor. The background is a soft-focus architectural office with neutral tones and large windows. Highly detailed and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSAjEpnfvAwn3kpW0T8xV2jDXHh2La9ZMLkSeblDksuUOIzLNBhsBDWQbA9XJv3hIrkBWzzm4av08sxlAJRPnHH_KxOpVGjyCf43Wym2wmlkgLCAlZy_Eu3ChQbVi8g5r9obP_aKDY-MllBQJIB3fY5QYIcreO9Rp4cg5w0N1UoNx9zKPh9X8_k8s9uZACRKhtjMb8GFneZTtb-dXnVkJ6iNN9k8873gGdb-mTimDVXDoChHL6Jt5rllBtcl1pGWrhTfRt5pQfcC4"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of an experienced urban planner in a light blue oxford shirt, looking confident. Background features a blurred city map and architectural models. Clean, corporate lighting with a modern touch." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNTf9h3O_jIC-DYdspSw3WjZxhL6BcIKPVHScIe4RYkYjSws1szqPUazACWIE_vmthAFzWg6bNVzeTla09YDvyECG-Jfh8kedTudiOItbLzNSRGSx3nrjKgx7H3JxYsQoYwhJT0f89X2UmzcBE4tUlRqmWVwI_YF6EasWGZ3IBQ-ZMmCm1Jsy1dL6JwO8t6T3TsucgpgnFco4UGtmgzWNrjUY-a-dxUaSV3_69F8uxzXFR2VZlBPFZnuQxpjMjYygnv7tI5hLefGY"/>
+</div>
+</div>
+<span class="font-label-md text-label-md text-outline">Joined by 200+ Specialists</span>
+</div>
+</div>
+<!-- Secondary Insight Card -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded-[20px] p-8 flex flex-col justify-center items-center text-center shadow-xl">
+<div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-white text-3xl">diversity_3</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-4">Community First</h3>
+<p class="font-body-md text-body-md opacity-90">
+                        Our algorithms are trained on diverse datasets to prevent bias and ensure the pulse of every neighborhood is heard.
+                    </p>
+</div>
+<!-- Strategic Alliances -->
+<div class="md:col-span-12 glass-panel rounded-[20px] p-8 inner-glow">
+<div class="flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="max-w-md">
+<h3 class="font-headline-md text-headline-md mb-2">Global Partnerships</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                                Scaling community impact through enterprise-grade infrastructure.
+                            </p>
+</div>
+<div class="flex flex-wrap justify-center items-center gap-12 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">cloud</span>
+<span class="font-bold text-xl tracking-tight text-on-surface">Google Cloud</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">memory</span>
+<span class="font-bold text-xl tracking-tight text-on-surface">NVIDIA</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">account_balance</span>
+<span class="font-bold text-xl tracking-tight text-on-surface">Urban Institute</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Timeline Section -->
+<section class="bg-surface-container-low py-24 px-container-padding">
+<div class="max-w-5xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg mb-4">The Pulse Journey</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tracing our evolution from a research project to a global enterprise suite.</p>
+</div>
+<div class="relative">
+<!-- Vertical Line -->
+<div class="absolute left-1/2 -translate-x-1/2 h-full w-0.5 timeline-gradient opacity-20"></div>
+<!-- Milestone 1 -->
+<div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 mb-20 items-center">
+<div class="md:text-right">
+<span class="font-label-md text-label-md text-primary bg-primary/10 px-3 py-1 rounded-full mb-2 inline-block">2020</span>
+<h4 class="font-title-lg text-title-lg mb-2">The Genesis</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Founded at the Center for Urban Innovation to address the 'Data Silence' in local governance.</p>
+</div>
+<div class="hidden md:block relative">
+<div class="absolute left-[-2.3rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-primary bg-white z-10"></div>
+<div class="w-full h-48 rounded-xl overflow-hidden shadow-lg transform rotate-2 hover:rotate-0 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A cinematic photo of a minimalist laboratory with researchers interacting with holographic city models. Soft purple and blue lighting, high-tech atmosphere, clean surfaces, and an aura of discovery. Modern enterprise aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZl1ru7gJroWStTjB-N9LREKC9hoWzWyJKWki3A1Za0pXYP_Uq7JRS41J_bzZfhZRlx5i8eO9ES1OXu3SqZF4jUY9YFwDzMLlepYJoCvj3tmTA9g9cYkkTW8HweBoFfSdDc-xD9XyoD4k31qGmaEn5xoQvL8G7CvMIpvLVUfcXEojim7h5PZTfFNe3BTRpFa4o9jtllg5Kqe1XsnzPJYA3N5jtwNbQbM25zYvrAKinNTjnZIam3sk1edEZuU95KC0TwH9chxkx_pU"/>
+</div>
+</div>
+</div>
+<!-- Milestone 2 -->
+<div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 mb-20 items-center">
+<div class="hidden md:block relative order-1 md:order-none">
+<div class="w-full h-48 rounded-xl overflow-hidden shadow-lg transform -rotate-2 hover:rotate-0 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A wide-angle shot of a vibrant community center meeting where people of diverse backgrounds are looking at large screens displaying clean AI-generated charts. Sunlight streams through large windows. Inspiring, social, and technological." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2gDIku5MzAb2q--k0FQkbSfvhXUpfK9mnya8qDuQLpKSVVSKzYx-Fuj-Ubxy-vnhTL2v07NMNoNM0VTGKRIq-UMcIO-nJAAlzoB23cqkGzS2Spkw7ftbYiaWjNj2OHVSH7Boh9xXQGvugEY3njn8PLKW12F-kvAAYAllOYcAFKN_YG-DmEBxF_e_QSWYLC9VNwkRVm3RqRuuXrsA6_cweeZFfPdT4xTmOY_AHo-nfKIY0rFoovtHn9Wg7QWkTHHfubiqzESfcIaY"/>
+</div>
+<div class="absolute right-[-2.3rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-primary bg-white z-10"></div>
+</div>
+<div class="md:text-left">
+<span class="font-label-md text-label-md text-primary bg-primary/10 px-3 py-1 rounded-full mb-2 inline-block">2022</span>
+<h4 class="font-title-lg text-title-lg mb-2">v1.0 Launch</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Released the first iteration of the Intelligent Auditor, serving 50 pilot cities across three continents.</p>
+</div>
+</div>
+<!-- Milestone 3 -->
+<div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div class="md:text-right">
+<span class="font-label-md text-label-md text-primary bg-primary/10 px-3 py-1 rounded-full mb-2 inline-block">2024</span>
+<h4 class="font-title-lg text-title-lg mb-2">Pulse Enterprise</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Strategic integration with Google Cloud and NVIDIA to power real-time predictive community modeling.</p>
+</div>
+<div class="hidden md:block relative">
+<div class="absolute left-[-2.3rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-primary bg-white z-10"></div>
+<div class="w-full h-48 rounded-xl overflow-hidden shadow-lg transform rotate-1 hover:rotate-0 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A sophisticated data center hallway with glowing blue server racks and glass panels. The lighting is clean and high-key. Symbols of high-velocity computing and security. Enterprise-grade infrastructure visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTBWi2zquOBkcNW9EFJub0QYGrcE-u3xd3juiHf8mK6lCQhsLj8bJP8LA4P9YsAUhnmlVbHbrm0bihlychgsljGfrXUlcWbOt6H3TI1nAdJVaTT3qbOLBBmqpefdm1jsxeR_WPyO_8hf1t1VlFlW6v6e-mFoIdn09v-Q54yGwbb3k70L27F_dgKpIZ2qmGWAsaphtTREB4xRDCsnvVCkMnydWvT8dh15OnCUwLlyI7HP3zahyCyAuxEWBbaS65bQ7fqBqUm0XuoOI"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Leadership Team -->
+<section class="py-24 px-container-padding">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-2">The Architects</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Visionaries blending ethics with advanced engineering.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-body-md text-body-md hover:shadow-lg transition-all active:scale-95">View All Team</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Leader 1 -->
+<div class="group">
+<div class="aspect-[4/5] rounded-2xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close-up professional portrait of a male CEO in a minimalist office. He has a calm, visionary look, wearing a black turtleneck. Soft, focused lighting highlighting his features against a clean, light-grey background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4a-7Y2SsHAnTPlZfAaLK-qb7W0FVFEYRPsu3oyIB9RxAeCjnJca6szse7P76hVTy9eZidfxQBOMVq6r9s_uQoZ1KNqiRXAmc5VKkAWc6ty9v2jQrUeWwwTxaHUf6VacxGDS0bd-Mw-UMfCNrPWRXJtf0YjYfT347G3rL1VO1PzP77tDl5mC6XhrH_ejHkOQQ-nhn9aXrASSyI3RB3opHrYHSgMhRXwLk2xeLLq2wsflMM9v2Cb4pGIoVpqqIU7iuhPBtni8NIj20"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">link</span>
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">mail</span>
+</div>
+</div>
+</div>
+<h4 class="font-title-lg text-title-lg">Marcus Sterling</h4>
+<p class="font-label-md text-label-md text-primary">Chief Executive Officer</p>
+</div>
+<!-- Leader 2 -->
+<div class="group">
+<div class="aspect-[4/5] rounded-2xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Professional portrait of a female Chief Technology Officer. She is smiling confidently, wearing a cream blazer. The background is a blurred high-tech workspace with clean geometric shapes. Intelligent and authoritative mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvzLTTNVMg-MsQQlcmnBC1YzLAzk3vf1qdUz-jK01AVmexM_3M9Y22dLrHsmt92gbB-TBMi33dSBnpeTDJUe4_s3Qr3H8CJkvZXnE5aLoLUmpXQ1RFmqjAYy00EUyIni91qMXsP3Xuab5LlJ3PRmRNxwpEAGdD4HI-moLj2diJfqcOYA94X39n14BkaUArPuWy4YzNvInDXO0b15lsz5bzemOTB89U72Fuc_HUc7AlDYZtMdun3qrTfHArNLXTKZaBsPQV_fM88nI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">link</span>
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">mail</span>
+</div>
+</div>
+</div>
+<h4 class="font-title-lg text-title-lg">Elena Vance</h4>
+<p class="font-label-md text-label-md text-primary">Chief Technology Officer</p>
+</div>
+<!-- Leader 3 -->
+<div class="group">
+<div class="aspect-[4/5] rounded-2xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of a male Head of Ethics, looking thoughtful and approachable. He's wearing a grey suit jacket over a white shirt. The background is a brightly lit library with a modern aesthetic. Trustworthy and professional vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDquh9oTZjyF6vmSCQ0p741MXRSBCNYj3Q1n3EdYMdUhePtm5biuaJ7AjIgpSw5-lUkzdtfM310EeMOZDDSHTZoG4vKjIQvbRO95Vcn3BDwZKCvj3yye4haTlZK5hSKBVKCUPBls_6mJM2SZkP2WMnCZ7A_mrWTIW7WFuJ3638h7lphzcNrqz7MLTnZD42F4zqhtvQm_0Gp8KKTb_1CJ9C72kDbyHrg0oddDTIfuMHhowdzCG1mOs_IKOH_oGDLeL1nBCtdXd8y15A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">link</span>
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">mail</span>
+</div>
+</div>
+</div>
+<h4 class="font-title-lg text-title-lg">Dr. Julian Thorne</h4>
+<p class="font-label-md text-label-md text-primary">Head of AI Ethics</p>
+</div>
+<!-- Leader 4 -->
+<div class="group">
+<div class="aspect-[4/5] rounded-2xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of a female Chief Product Officer in a creative studio setting. She has a vibrant energy, wearing a minimal grey top. The background features blurred sketches of app interfaces. Modern, visionary, and high-clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsZGGJQNCCSznOuDzBl8E7qcfaHM-xIoNZ_TIiY_pfdBfHUbYdZyTAYpwxJLsn44fDLTv_TtrGoJKCEdRGC0ecfqHl1a5veqcJ6BO4HKNr8wSEAJF60zGWved2QNXQ9rIhW0ReTens-eD5Hjf08edoByCiL2xxpaNxE2B96rxblnDuvy76PJSpqu3kXoOVOydY8GKQrQCYIHiEqqf-cBoln-UjZX_0nFhcfFeQTBao-nsk6zGGvSyCBQFGy0XG5xFUHEi4lhRZvxM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">link</span>
+<span class="material-symbols-outlined text-white cursor-pointer hover:text-primary-fixed-dim">mail</span>
+</div>
+</div>
+</div>
+<h4 class="font-title-lg text-title-lg">Sarah Chen</h4>
+<p class="font-label-md text-label-md text-primary">Chief Product Officer</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 px-container-padding">
+<div class="max-w-7xl mx-auto bg-inverse-surface text-white rounded-[32px] p-12 md:p-20 relative overflow-hidden">
+<div class="relative z-10 max-w-2xl">
+<h2 class="font-display-lg text-display-lg mb-6 leading-tight">Ready to audit your community's pulse?</h2>
+<p class="font-body-lg text-body-lg text-white/70 mb-10">Join over 200 municipalities using CommunityPulse AI to build more resilient futures.</p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-body-lg text-body-lg hover:brightness-110 transition-all">Get Started</button>
+<button class="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-body-lg text-body-lg backdrop-blur-md transition-all">Download Thesis</button>
+</div>
+</div>
+<!-- Abstract visual -->
+<div class="absolute right-0 top-0 h-full w-1/3 opacity-20 pointer-events-none hidden lg:block">
+
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-background dark:bg-background relative w-full py-gutter border-t border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-container-padding flex flex-wrap justify-between items-center gap-4">
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md font-bold text-on-surface">CommunityPulse AI</span>
+<p class="font-body-md text-body-md text-on-surface-variant/60">© 2024 CommunityPulse AI. The Intelligent Auditor.</p>
+</div>
+<div class="flex gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">API Docs</a>
+<a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Support</a>
+<span class="font-label-md text-label-md text-on-surface-variant/40">v2.4.1</span>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and subtle scroll effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-8');
+                    }
+                });
+            }, observerOptions);
+
+            // Apply fade-in to cards and sections
+            document.querySelectorAll('.glass-panel, .group').forEach(el => {
+                el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>

@@ -38,29 +38,51 @@ def create_refresh_token(subject: Union[str, Any], expires_delta: Optional[timed
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
+def decode_access_token(token: str) -> Optional[dict]:
+    """Decode and validate JWT access token"""
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != "access":
+            return None
+        return payload
+    except JWTError:
+        return None
+
 def verify_token(token: str) -> Optional[dict]:
+    """Legacy token verification - use decode_access_token instead"""
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
     except JWTError:
         return None
 
-def verify_firebase_token(id_token: str) -> dict:
-    # Under real circumstances, firebase_admin.auth.verify_id_token(id_token) is called.
-    # To ensure mock testing and offline capabilities work, if token starts with "mock_", we decode it mockingly.
-    if id_token.startswith("mock_"):
-        return {
-            "uid": id_token.replace("mock_", ""),
-            "email": "ranjeet@communitypulse.ai",
-            "name": "Ranjeet Kumar",
-            "email_verified": True
-        }
+def verify_firebase_token(id_token: str) -> Optional[dict]:
+    """
+    Verify Firebase ID token
+    WARNING: This is a development/demo implementation
+    In production, use firebase_admin.auth.verify_id_token(id_token)
+    """
+    # For production, uncomment and configure firebase-admin:
+    # try:
+    #     from firebase_admin import auth
+    #     decoded_token = auth.verify_id_token(id_token)
+    #     return {
+    #         "uid": decoded_token["uid"],
+    #         "email": decoded_token.get("email"),
+    #         "name": decoded_token.get("name"),
+    #         "email_verified": decoded_token.get("email_verified", False)
+    #     }
+    # except Exception as e:
+    #     return None
     
-    # Real fallback (Mocked for robust offline/hackathon execution)
+    # Development fallback - creates deterministic user from token
+    if not id_token or len(id_token) < 10:
+        return None
+        
     return {
         "uid": f"user_{hashlib.md5(id_token.encode()).hexdigest()[:10]}",
-        "email": "user@communitypulse.ai",
-        "name": "Mock User",
+        "email": "dev@communitypulse.ai",
+        "name": "Development User",
         "email_verified": True
     }
 

@@ -9,6 +9,7 @@ import {
   Mail, Calendar, BarChart3, HelpCircle, ArrowRight, User, Check, LayoutDashboard, MessageSquare
 } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import MapComponent from '../components/MapComponent';
 
 export default function Dashboard() {
   const { 
@@ -263,7 +264,7 @@ export default function Dashboard() {
             </div>
             <div>
               <div className="text-sm font-bold truncate">Ranjeet Kumar</div>
-              <div className="text-xs text-slate-400 truncate">ranjeet@communitypulse.ai</div>
+              <div className="text-xs text-slate-400 truncate">rajranjeet7680@gmail.com</div>
             </div>
           </div>
           <button 
@@ -534,7 +535,7 @@ export default function Dashboard() {
                   {['traffic', 'flood', 'aqi'].map(layer => (
                     <button 
                       key={layer}
-                      onClick={() => setMapLayer(layer as any)}
+                      onClick={() => setMapLayer(layer as 'traffic' | 'flood' | 'aqi')}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                         mapLayer === layer 
                           ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/10' 
@@ -548,19 +549,8 @@ export default function Dashboard() {
               </div>
 
               {/* Map Preview Area */}
-              <div className="h-96 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden relative bg-blue-50/30 flex items-center justify-center">
-                <div className="absolute inset-0 bg-cover bg-center opacity-60 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/77.5946,12.9716,11,0/800x400?access_token=mock')]"></div>
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/10 to-emerald-500/10 mix-blend-overlay"></div>
-                
-                {/* Mock spatial heat points overlay */}
-                <div className="absolute top-1/3 left-1/4 w-24 h-24 rounded-full bg-red-500/20 blur-xl glow-indicator"></div>
-                <div className="absolute bottom-1/4 right-1/3 w-36 h-36 rounded-full bg-emerald-500/10 blur-2xl"></div>
-
-                {/* Mock POI points */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl flex items-center gap-2 z-10">
-                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                  <span className="text-xs font-bold">District 3 Center</span>
-                </div>
+              <div className="h-96 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden relative bg-blue-50/30">
+                <MapComponent layer={mapLayer} />
               </div>
             </div>
           )}
@@ -940,7 +930,7 @@ export default function Dashboard() {
                   <div className="font-bold text-sm">Active Workspace Users</div>
                   <div className="space-y-2 text-xs">
                     {[
-                      { name: 'Ranjeet Kumar', email: 'ranjeet@communitypulse.ai', role: 'admin' },
+                      { name: 'Ranjeet Kumar', email: 'rajranjeet7680@gmail.com', role: 'admin' },
                       { name: 'Priya Sharma', email: 'priya@communitypulse.ai', role: 'member' }
                     ].map((user, i) => (
                       <div key={i} className="p-3 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">

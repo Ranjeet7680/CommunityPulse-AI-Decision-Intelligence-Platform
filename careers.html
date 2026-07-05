@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Careers | CommunityPulse AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "outline": "#727785",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005320",
+                        "primary-fixed-dim": "#adc7ff",
+                        "surface-variant": "#e0e2ec",
+                        "primary": "#005bbf",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2d3038",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#006e2c",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#86f898",
+                        "surface-dim": "#d8d9e3",
+                        "on-secondary-container": "#00722f",
+                        "surface-container-highest": "#e0e2ec",
+                        "on-tertiary-container": "#ffffff",
+                        "secondary-fixed-dim": "#6ddd81",
+                        "inverse-primary": "#adc7ff",
+                        "on-surface-variant": "#414754",
+                        "on-secondary-fixed": "#002108",
+                        "tertiary-container": "#987000",
+                        "primary-container": "#1a73e8",
+                        "inverse-on-surface": "#eff0fa",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c1c6d6",
+                        "on-primary-fixed": "#001a41",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#005bc0",
+                        "tertiary": "#795900",
+                        "surface-container-low": "#f2f3fd",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#fbbc05",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-fixed": "#d8e2ff",
+                        "on-primary-container": "#ffffff",
+                        "secondary-fixed": "#89fa9b",
+                        "surface-container": "#ecedf7",
+                        "on-surface": "#191c23",
+                        "tertiary-fixed": "#ffdfa0",
+                        "background": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "on-primary-fixed-variant": "#004493",
+                        "on-background": "#191c23"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "header-height": "64px",
+                        "gutter": "24px",
+                        "container-padding": "32px",
+                        "unit": "4px",
+                        "nav-rail-width": "72px"
+                    },
+                    "fontFamily": {
+                        "title-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 20px -5px rgba(0, 91, 191, 0.1);
+        }
+        .career-card:hover .apply-btn {
+            transform: translateX(4px);
+        }
+        body {
+            background-color: #F8FAFC;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar from Shared Components -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl text-primary font-body-md text-body-md docked full-width top-0 sticky z-50 shadow-sm border-b border-white/10 flex justify-between items-center h-header-height px-container-padding w-full">
+<div class="flex items-center gap-8">
+<a href="index.html" class="font-headline-md text-headline-md font-bold text-primary">CommunityPulse AI</a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">Platform</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">Solutions</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="careers.html">Careers</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">Resources</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-primary/5 p-2 rounded-lg transition-all" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-primary/5 p-2 rounded-lg transition-all" data-icon="help">help</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-primary/5 p-2 rounded-lg transition-all" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:bg-primary/5 p-2 rounded-lg transition-all" data-icon="contrast">contrast</span>
+</div>
+<img class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional headshot of a diverse tech professional in a modern office setting, bright natural lighting, soft background blur, conveying intelligence and approachability, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Aiw8Zn7KxxwKfitewwDlX764NG2cuvrrOkoAXLQHeGPf5MBAbVvJBQmm8hMxoDCBY_ChtkcZgnqmrSqIggbUGH-KzmhrJ0lFovC3v26uOxkwwNl63QeV_35DAaeBQyXBiav54YW7IREevMFEPHFHVxTzACSiVzCCQcgLd-3T0Kg2xiPRXLe_9oWUuvjJwTSzdRwF86csKu8edPaUDqMgB-9knr5lnA1jQj0Epbx4egAsgeOADuoDTgQQDr3P3dpN_hkABiJSHyQ"/>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-24 pb-32 bg-background">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+
+</div>
+<div class="max-w-7xl mx-auto px-container-padding relative z-10 text-center">
+<span class="inline-block px-4 py-1.5 mb-6 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md">WE ARE HIRING</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 max-w-4xl mx-auto">Build the Future of <span class="text-primary">Decision Intelligence</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    We're searching for visionary builders to help us scale CommunityPulse AI. Join an elite team of researchers, engineers, and policy experts auditing the world's most complex systems.
+                </p>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-title-lg text-title-lg shadow-lg hover:shadow-primary/20 transition-all active:scale-95">View Open Roles</button>
+<button class="border border-outline-variant text-on-surface px-8 py-3 rounded-lg font-title-lg text-title-lg hover:bg-surface-container-low transition-all">Our Mission</button>
+</div>
+</div>
+</section>
+<!-- Department Categories -->
+<section class="py-20 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-container-padding">
+<div class="mb-12">
+<h2 class="font-headline-lg text-headline-lg mb-2">Departments</h2>
+<p class="text-on-surface-variant">Find your place in our specialized ecosystem.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Engineering -->
+<div class="glass-panel p-8 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl" data-icon="code">code</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-3">Engineering</h3>
+<p class="text-on-surface-variant font-body-md text-body-md mb-6">Scalable systems for real-time community auditing and predictive modeling.</p>
+<span class="font-label-md text-label-md text-primary">8 OPENINGS</span>
+</div>
+<!-- AI Research -->
+<div class="glass-panel p-8 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-3">AI Research</h3>
+<p class="text-on-surface-variant font-body-md text-body-md mb-6">Pushing the boundaries of LLM transparency and automated ethical oversight.</p>
+<span class="font-label-md text-label-md text-secondary">4 OPENINGS</span>
+</div>
+<!-- Design -->
+<div class="glass-panel p-8 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl" data-icon="palette">palette</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-3">Product Design</h3>
+<p class="text-on-surface-variant font-body-md text-body-md mb-6">Crafting intuitive glassmorphism interfaces for dense enterprise data.</p>
+<span class="font-label-md text-label-md text-tertiary">3 OPENINGS</span>
+</div>
+<!-- Policy -->
+<div class="glass-panel p-8 rounded-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="w-12 h-12 rounded-lg bg-error/10 text-error flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl" data-icon="gavel">gavel</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-3">Policy &amp; Ethics</h3>
+<p class="text-on-surface-variant font-body-md text-body-md mb-6">Defining the standards for AI accountability in the public sector.</p>
+<span class="font-label-md text-label-md text-error">2 OPENINGS</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Open Positions -->
+<section class="py-24 bg-white">
+<div class="max-w-4xl mx-auto px-container-padding">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-2">Open Positions</h2>
+<p class="text-on-surface-variant">Join us in our San Francisco hub or remotely.</p>
+</div>
+<div class="hidden sm:flex gap-2">
+<span class="px-4 py-2 rounded-lg border border-primary bg-primary/5 text-primary font-label-md text-label-md">ALL ROLES</span>
+<span class="px-4 py-2 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low cursor-pointer">REMOTE</span>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Position 1 -->
+<div class="career-card group flex items-center justify-between p-6 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all">
+<div class="flex items-center gap-6">
+<div class="hidden sm:block text-outline">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg mb-1 group-hover:text-primary transition-colors">Senior Distributed Systems Engineer</h4>
+<div class="flex gap-4 text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span> San Francisco / Remote</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span> Full-time</span>
+</div>
+</div>
+</div>
+<button class="apply-btn bg-surface-container-highest text-on-surface px-6 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary hover:text-white transition-all">
+                            APPLY <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Position 2 -->
+<div class="career-card group flex items-center justify-between p-6 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all">
+<div class="flex items-center gap-6">
+<div class="hidden sm:block text-outline">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg mb-1 group-hover:text-primary transition-colors">AI Fairness Researcher</h4>
+<div class="flex gap-4 text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span> London / Remote</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span> Full-time</span>
+</div>
+</div>
+</div>
+<button class="apply-btn bg-surface-container-highest text-on-surface px-6 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary hover:text-white transition-all">
+                            APPLY <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Position 3 -->
+<div class="career-card group flex items-center justify-between p-6 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all">
+<div class="flex items-center gap-6">
+<div class="hidden sm:block text-outline">
+<span class="material-symbols-outlined" data-icon="web">web</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg mb-1 group-hover:text-primary transition-colors">Lead Product Designer</h4>
+<div class="flex gap-4 text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span> New York / Hybrid</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span> Full-time</span>
+</div>
+</div>
+</div>
+<button class="apply-btn bg-surface-container-highest text-on-surface px-6 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary hover:text-white transition-all">
+                            APPLY <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Position 4 -->
+<div class="career-card group flex items-center justify-between p-6 rounded-xl border border-outline-variant/30 hover:border-primary/50 transition-all">
+<div class="flex items-center gap-6">
+<div class="hidden sm:block text-outline">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<div>
+<h4 class="font-title-lg text-title-lg mb-1 group-hover:text-primary transition-colors">MLOps Infrastructure Engineer</h4>
+<div class="flex gap-4 text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span> Remote</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span> Full-time</span>
+</div>
+</div>
+</div>
+<button class="apply-btn bg-surface-container-highest text-on-surface px-6 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-primary hover:text-white transition-all">
+                            APPLY <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Life at CommunityPulse (Bento Grid) -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-container-padding">
+<div class="text-center mb-16">
+<h2 class="font-display-lg text-display-lg mb-4">Life at Pulse</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">We foster an environment where rigorous science meets high-impact engineering in a culture of radical transparency.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 h-[800px] md:h-[600px]">
+<!-- Bento Card 1 -->
+<div class="md:col-span-2 md:row-span-1 rounded-2xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 to-transparent z-10"></div>
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A modern open-plan office space featuring warm wood accents, abundant indoor plants, and floor-to-ceiling windows overlooking a sunset city skyline. Groups of professionals are collaborating around sleek workstations, creating an atmosphere of innovation and warmth." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAupSBybXmxmgGezg-XwSlMWoPITKHnkqghJU5IaPso7m-bV9TbUttXtB7S_pxXaIOZmFKl_vVySIbU2Vz1vfW4mFvHssB8SOuyFYtoXGKMXZinl_d83XT8i_aZTvULNt3vOOySXmNl63rNMZkTHX922Fz1L8syOPMcKAOnj7gOpH_JcPbOL5tY_yjLvEhC6NWdPebiri9bYrPzmL3y_TzMiQfC1rtqE-YDNLgRPdLM0d1_Py9UEv1dpXKfwDz4JaK2ykQ-1NL2SyI')"></div>
+<div class="absolute bottom-0 left-0 p-8 z-20">
+<h3 class="text-white font-headline-md text-headline-md mb-2">The Pulse Hub</h3>
+<p class="text-white/80 max-w-md">Our collaborative headquarters designed for deep focus and communal breakthroughs.</p>
+</div>
+</div>
+<!-- Bento Card 2 -->
+<div class="md:col-span-1 md:row-span-2 rounded-2xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent z-10"></div>
+<div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A high-tech laboratory setting where researchers are using futuristic AR headsets to visualize complex 3D data clusters. The lighting is cool-toned with bright cyan accents, emphasizing the advanced AI research nature of the work environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCBzNdg9Ng2WUIQCjpvrR2T8HpvzRbU8VRLOEFjab_C0iuvAIVoS-pHr2Dtl0anLQKuRvsyKQPNUtS2rSpYWZOu0ePExNmh4zzfULpa3H2rjqhAglJTTHtKaIkxGBGJdTjPIyyjjTc6jrVU2kOszETzLOjHX92dO4LyLOvbmSPEudpi2Ky7RhaShQ14kWbrRFbQxG8PgqBOo293u16CAvwKPIgK6GSQ1t-t9GejOKR5KVMuFoTz3ph4rZbTeVcSXDPrvM-9fSka_I')"></div>
+<div class="absolute bottom-0 left-0 p-8 z-20">
+<h3 class="text-white font-headline-md text-headline-md mb-2">Research First</h3>
+<p class="text-white/80">Every Friday is dedicated to individual research projects and speculative engineering experiments.</p>
+</div>
+</div>
+<!-- Bento Card 3 -->
+        <div class="md:col-span-1 md:row-span-1 rounded-2xl overflow-hidden relative group">
+          <div class="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent z-10"></div>
+          <div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" data-alt="A diverse group of community members collaborating in a modern office space." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAtjT6dPlaHlC4qoPHbRBmM-mvNKafx3Zk0nzQz6OxPdh2-zLdyfu4bOgeLB1nPcibq6NK-75p9Je61sJFHjtX7x0XyQwq-f9OrgeZBGp7dj-7uREQ79NbFfISNoiCH38UlvcVb-pfcCZPBKWHC6qqtGDIENa6P1wNB3fiE7djEjkak9xoSgfkWOsvzci33DA5vlmX-9FqbVoxlMpodsGZ6oF7wzn_o_9eiRXUFBHWPi44lUq8m7xTWzZ0bDYEnHYqynmia3L4ilso')"></div>
+          <div class="absolute bottom-0 left-0 p-8 z-20">
+            <h3 class="text-white font-headline-md text-headline-md mb-2">Diverse Focus</h3>
+            <p class="text-white/80">Blending technical expertise with civic responsibility.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-background dark:bg-background relative w-full py-gutter border-t border-outline-variant/20">
+  <div class="max-w-7xl mx-auto px-container-padding flex flex-wrap justify-between items-center gap-4">
+    <div class="flex flex-col gap-2">
+      <span class="font-label-md text-label-md font-bold text-on-surface">CommunityPulse AI</span>
+      <p class="font-body-md text-body-md text-on-surface-variant/60">© 2024 CommunityPulse AI. The Intelligent Auditor.</p>
+    </div>
+    <div class="flex gap-6">
+      <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Privacy Policy</a>
+      <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Terms of Service</a>
+      <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">API Docs</a>
+      <a class="font-label-md text-label-md text-on-surface-variant/60 hover:text-primary" href="#">Support</a>
+      <span class="font-label-md text-label-md text-on-surface-variant/40">v2.4.1</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.glass-panel, .career-card').forEach(el => {
+      el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+      observer.observe(el);
+    });
+  });
+</script>
+</body>
+</html>
