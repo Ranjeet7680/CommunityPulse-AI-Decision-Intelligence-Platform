@@ -1819,7 +1819,7 @@ textarea.input { resize: vertical; min-height: 100px; }
   border-radius: var(--r-lg);
   box-shadow: 0 12px 40px rgba(0,0,0,0.12);
   padding: 8px;
-  z-index: 200;
+  z-index: 1005;
   animation: slideDown 0.18s ease both;
 }
 @keyframes slideDown {
@@ -2152,18 +2152,91 @@ textarea.input { resize: vertical; min-height: 100px; }
     top: 0; left: 0; bottom: 0;
     width: var(--sidebar-width);
     transform: translateX(-100%);
-    z-index: 1000;
+    z-index: 1002;
     transition: transform var(--t-base);
   }
   .sidebar.mobile-open { transform: translateX(0); }
   #mobile-sidebar-toggle { display: flex !important; }
   .header-search { display: none !important; }
   .grid-responsive-4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Settings horizontal scrolling navigation bar */
+  .settings-nav {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  .settings-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .settings-nav-item {
+    padding: 8px 16px !important;
+    border-radius: var(--r-full) !important;
+    flex-shrink: 0;
+  }
+
+  /* AI Assistant height adjust to avoid bottom-nav overlapping */
+  #view-ai-assistant {
+    height: calc(100vh - var(--header-height) - 64px) !important;
+  }
+  .chat-shell {
+    max-height: calc(100vh - var(--header-height) - 64px) !important;
+  }
+
+  /* GIS Map height & info panel bottom clearance */
+  #view-maps {
+    height: calc(100vh - var(--header-height) - 64px) !important;
+  }
+  .map-info-panel {
+    bottom: 80px !important;
+    right: 16px !important;
+    left: auto !important;
+  }
 }
 @media (max-width: 768px) {
   .grid-responsive-dashboard-main { grid-template-columns: 1fr; }
   .grid-responsive-2 { grid-template-columns: 1fr; }
+  .grid-responsive-3 { grid-template-columns: 1fr !important; }
   .profile-layout { grid-template-columns: 1fr; }
+  .main-content.no-padding {
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Stack Map controls vertically on tablet/mobile screens */
+  #map-topbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    background: rgba(10, 22, 50, 0.95) !important;
+  }
+  #map-breadcrumb {
+    max-width: 100% !important;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 4px;
+  }
+  #map-breadcrumb::-webkit-scrollbar {
+    display: none;
+  }
+  .map-crumb {
+    flex-shrink: 0;
+  }
+  #map-topbar > div:last-child {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
 }
 @media (max-width: 600px) {
   .dash-grid { grid-template-columns: 1fr; }
@@ -2175,6 +2248,13 @@ textarea.input { resize: vertical; min-height: 100px; }
   .land-footer { padding: 40px 24px; }
   .grid-responsive-3, .grid-responsive-4 { grid-template-columns: 1fr; }
   .grid-responsive-6 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  
+  /* Center and fit dropdown menus on very narrow mobile screens */
+  .dropdown {
+    width: calc(100vw - 32px) !important;
+    max-width: 350px !important;
+    right: -40px !important;
+  }
   
   /* Mobile navbar & view headers */
   .land-nav {
@@ -2207,6 +2287,45 @@ textarea.input { resize: vertical; min-height: 100px; }
     width: 100%;
     justify-content: flex-start;
     flex-wrap: wrap;
+  }
+
+  /* Compact content padding for mobile phones */
+  .main-content {
+    padding: 16px !important;
+  }
+  .app-header {
+    padding: 0 12px !important;
+    gap: 8px !important;
+  }
+
+  /* Horizontally scrollable quick prompt lists in AI Assistant chat */
+  .chat-quick-btns {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .chat-quick-btns::-webkit-scrollbar {
+    display: none;
+  }
+  .quick-prompt {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  .chat-input-area {
+    padding: 12px 16px !important;
+  }
+
+  /* Floating full-width bottom sheet for statistics panel on mobile */
+  .map-info-panel {
+    bottom: 76px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
   }
 }
 @media (max-width: 400px) {
@@ -2751,6 +2870,36 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   transform: translateY(-4px) !important;
 }
 
+/* Background Ambient Glows for Light Mode */
+[data-theme="light"] .main-content {
+  position: relative;
+  overflow-x: hidden;
+}
+[data-theme="light"] .main-content::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26, 115, 232, 0.04) 0%, rgba(26, 115, 232, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="light"] .main-content::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  left: -5%;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52, 168, 83, 0.03) 0%, rgba(52, 168, 83, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Background Ambient Glows */
 [data-theme="dark"] .main-content {
   position: relative;
@@ -3133,6 +3282,73 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   }
   .step-indicator {
     margin-bottom: 24px !important;
+  }
+}
+
+/* Sub-page overlay entry/exit transitions */
+.sub-page-overlay {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.sub-page-overlay.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* =========================================================
+   PAGE TRANSITIONS, MIC PULSE & BUTTON CLICK EFFECTS
+   ========================================================= */
+
+/* Smooth page slide-up fade-in transition */
+.app-view.active {
+  animation: viewFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes viewFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Voice listening mic pulse animation */
+@keyframes voicePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(234, 67, 53, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(234, 67, 53, 0);
+  }
+}
+.listening-pulse {
+  animation: voicePulse 1.4s infinite !important;
+  color: var(--red) !important;
+  background: var(--red-50) !important;
+}
+
+/* Button active click scale down feedback */
+.btn:active, .fab-btn:active, .bottom-nav-item:active {
+  transform: scale(0.96) !important;
+}
+
+/* Custom fadeSlideIn entry for dynamic card creations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

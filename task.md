@@ -3,14 +3,14 @@
 - `[x]` Redesign onboarding cards (Step 1, 2, and 3) with theme-aware glassmorphic styling
 - `[x]` Make onboarding input, select, connector cards, and code tips fully glassmorphic and premium
 - `[x]` Add advanced micro-interactions (magnetic hover, confetti, skeletal loaders) in `app.css` and `app.js`
-- `[x]` Embed Command Palette and Keyboard Shortcuts sheet inside `index.html` and `app.js`
-- `[x]` Build dynamic Onboarding walkthrough tour overlay and helper logic
-- `[x]` Write drag-and-drop dashboard panel customization and local state storage in `app.js`
+- `[x]` Embed Command Palette and Keyboard Shortcuts  - `[x]` Update `index.html` (replace map/logo emojis with Material Icons, fulfill 15+ subpage overlay content structures)
+  - `[x]` Update `communitypulse-static-prototype/index.html` (sync markup updates)l customization and local state storage in `app.js`
 - `[x]` Add offline detection, custom validations, and modern Toast notifications queue in `app.js`
 - `[x]` Modify `api-config.js` BASE_URL to dynamically handle local development vs. production Vercel environments
 - `[x]` Update root `vercel.json` with builds and routes to run FastAPI backend as serverless python function alongside static frontend assets
 - `[x]` Dynamicize referral sharing link generation (replacing hardcoded prototype URLs with current domain origins)
 - `[x]` Resolve launch script port mismatch between `start.bat` and `QUICKSTART.bat` using browser port auto-detection
+- `[x]` Commit and push release version `v1.1.0` changes to remote GitHub repository
 - `[x]` Align accessibility landmarks, aria-labels, and visible focus outline overrides
 - `[x]` Implement client-side telemetry caching and chart optimizations in `app.js`
 - `[x]` Integrate user Authentication (login/signup/profile) with backend in `app.js`

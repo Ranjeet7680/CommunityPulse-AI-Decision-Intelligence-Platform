@@ -195,6 +195,19 @@ function showApp() {
 
 function navigateTo(view) {
   State.currentView = view;
+  
+  // Hide FAB container on map page to keep view clean and prevent overlapping map controls
+  const fab = $('#app-fab-container');
+  if (fab) {
+    if (view === 'maps') {
+      fab.style.display = 'none';
+      const chat = $('#floating-chat');
+      if (chat) chat.style.display = 'none';
+    } else {
+      fab.style.display = 'flex';
+    }
+  }
+
   $$('.nav-item').forEach(n => {
     n.classList.toggle('active', n.dataset.view === view);
   });
@@ -764,74 +777,74 @@ State.mapLevel = 'dhanbad'; // default: street-level Dhanbad
 
 const MAP_LEVELS = {
   world: {
-    name: '🌍 World Overview',
+    name: 'World Overview',
     locationName: 'World',
     sub: 'All Continents',
     stats: { 'Continents': '7', 'Countries Monitored': '54', 'Active Alerts': '1,240', 'Data Sources': '10,000+', 'Coverage': 'Global' },
     zoom: 0.4,
     coords: [20.0, 0.0],
     leafletZoom: 2,
-    label: '🌍 World — Global Overview',
+    label: 'World — Global Overview',
   },
-  aria: { // Keep the typo 'aria' or support both 'asia' and 'aria' just in case
-    name: '🌏 Asia Region',
+  aria: {
+    name: 'Asia Region',
     locationName: 'Asia',
     sub: 'Regional View',
     stats: { 'Countries': '48', 'Cities Monitored': '3,200+', 'Active Alerts': '280', 'Sensors Online': '148,000', 'Coverage': 'Asia Pacific' },
     zoom: 0.6,
     coords: [34.0, 100.0],
     leafletZoom: 3,
-    label: '🌏 Asia — Regional View',
+    label: 'Asia — Regional View',
   },
   asia: {
-    name: '🌏 Asia Region',
+    name: 'Asia Region',
     locationName: 'Asia',
     sub: 'Regional View',
     stats: { 'Countries': '48', 'Cities Monitored': '3,200+', 'Active Alerts': '280', 'Sensors Online': '148,000', 'Coverage': 'Asia Pacific' },
     zoom: 0.6,
     coords: [34.0, 100.0],
     leafletZoom: 3,
-    label: '🌏 Asia — Regional View',
+    label: 'Asia — Regional View',
   },
   india: {
-    name: '🇮🇳 India',
+    name: 'India',
     locationName: 'India',
     sub: 'National View',
     stats: { 'States': '28', 'Districts': '780', 'Active Alerts': '64', 'Sensors Online': '42,600', 'Population': '1.4 Billion' },
     zoom: 0.8,
     coords: [20.5937, 78.9629],
     leafletZoom: 5,
-    label: '🇮🇳 India — National View',
+    label: 'India — National View',
   },
   jharkhand: {
-    name: '⛏ Jharkhand',
+    name: 'Jharkhand',
     locationName: 'Jharkhand, India',
     sub: 'India · Asia · World',
     stats: { 'Districts': '24', 'Cities': '14', 'Active Alerts': '8', 'Sensors Online': '2,840', 'Population': '3.84 Crore' },
     zoom: 1.0,
     coords: [23.3441, 85.3096],
     leafletZoom: 8,
-    label: '⛏ Jharkhand — State Overview',
+    label: 'Jharkhand — State Overview',
   },
   dhanbad: {
-    name: '📍 Dhanbad City',
+    name: 'Dhanbad City',
     locationName: 'Dhanbad, Jharkhand',
     sub: 'India · Asia · World',
     stats: { 'Population': '12.6 Lakh', 'Districts': '6 Active Zones', 'Alert Markers': '4 Critical', 'Sensors Online': '842 / 856', 'Air Quality (AQI)': '147 – Moderate', 'Last Update': 'Just now' },
     zoom: 1.3,
     coords: [23.7957, 86.4304],
     leafletZoom: 12,
-    label: '📍 Dhanbad City — Street Detail',
+    label: 'Dhanbad City — Street Detail',
   },
   ism_dhanbad: {
-    name: '🎓 ISM Dhanbad',
+    name: 'IIT (ISM) Dhanbad',
     locationName: 'IIT (ISM) Dhanbad',
     sub: 'Dhanbad · Jharkhand · India',
     stats: { 'Students': '8,500+', 'Campus Area': '393 Acres', 'Active Alerts': '1 Critical', 'Sensors Online': '112 / 115', 'Air Quality (AQI)': '118 – Moderate', 'Last Update': 'Just now' },
     zoom: 1.6,
     coords: [23.8142, 86.4412],
     leafletZoom: 16,
-    label: '🎓 IIT (ISM) Dhanbad — Campus Detail',
+    label: 'IIT (ISM) Dhanbad — Campus Detail',
   },
 };
 
@@ -863,7 +876,14 @@ function setMapLevel(level) {
   }
   
   const labelEl = $('#map-level-label');
-  if (labelEl) labelEl.textContent = cfg.label;
+  if (labelEl) {
+    let iconName = 'location_on';
+    if (level === 'world' || level === 'asia' || level === 'aria') iconName = 'public';
+    else if (level === 'india') iconName = 'flag';
+    else if (level === 'jharkhand') iconName = 'construction';
+    else if (level === 'ism_dhanbad') iconName = 'school';
+    labelEl.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;vertical-align:middle;margin-right:6px;color:var(--blue)">${iconName}</span>${cfg.label}`;
+  }
   
   // Pan and Zoom Leaflet map
   if (window.leafletMap && cfg.coords) {
@@ -3311,7 +3331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tour) tour.classList.add('hidden');
   };
 
-  window.nextOnboardingStep = function() {
+  window.nextTourStep = function() {
     tourStepIndex++;
     if (tourStepIndex < TOUR_STEPS.length) {
       showTourStep(tourStepIndex);
@@ -3452,3 +3472,152 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 1000);
 });
+
+// Interactive 3D Particle Background for Onboarding
+(function() {
+  const canvas = document.getElementById('onboarding-bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let width, height;
+  let particles = [];
+  const numParticles = 80;
+  const focalLength = 300;
+  
+  function resize() {
+    width = canvas.width = canvas.offsetWidth;
+    height = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  
+  // Initialize particles in a 3D box
+  for (let i = 0; i < numParticles; i++) {
+    particles.push({
+      x: (Math.random() - 0.5) * 800,
+      y: (Math.random() - 0.5) * 800,
+      z: (Math.random() - 0.5) * 800,
+      vx: (Math.random() - 0.5) * 1.5,
+      vy: (Math.random() - 0.5) * 1.5,
+      vz: (Math.random() - 0.5) * 1.5,
+      radius: Math.random() * 2 + 1
+    });
+  }
+  
+  let mouseX = 0, mouseY = 0;
+  let targetRotationX = 0, targetRotationY = 0;
+  let rotationX = 0, rotationY = 0;
+  
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX - window.innerWidth / 2;
+    mouseY = e.clientY - window.innerHeight / 2;
+    targetRotationY = (mouseX / (window.innerWidth / 2)) * 0.25;
+    targetRotationX = -(mouseY / (window.innerHeight / 2)) * 0.25;
+  });
+  
+  function rotateY(particle, angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const x = particle.x * cos - particle.z * sin;
+    const z = particle.z * cos + particle.x * sin;
+    particle.x = x;
+    particle.z = z;
+  }
+  
+  function rotateX(particle, angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const y = particle.y * cos - particle.z * sin;
+    const z = particle.z * cos + particle.y * sin;
+    particle.y = y;
+    particle.z = z;
+  }
+  
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    
+    // Smoothly interpolate rotation toward target (mouse response)
+    rotationX += (targetRotationX - rotationX) * 0.05;
+    rotationY += (targetRotationY - rotationY) * 0.05;
+    
+    // Draw connections
+    const projected = [];
+    const maxDistance = 220;
+    
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      
+      // Copy coordinates to rotate
+      let rx = p.x;
+      let ry = p.y;
+      let rz = p.z;
+      
+      // Update position
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+      
+      // Bounce inside boundary box
+      const boxSize = 400;
+      if (Math.abs(p.x) > boxSize) p.vx *= -1;
+      if (Math.abs(p.y) > boxSize) p.vy *= -1;
+      if (Math.abs(p.z) > boxSize) p.vz *= -1;
+      
+      // Apply mouse-based rotation plus a constant ambient drift
+      const tempParticle = { x: rx, y: ry, z: rz };
+      rotateY(tempParticle, rotationY + 0.0006);
+      rotateX(tempParticle, rotationX + 0.0003);
+      
+      // Project to 2D
+      const scale = focalLength / (focalLength + tempParticle.z + 500);
+      const projX = width / 2 + tempParticle.x * scale;
+      const projY = height / 2 + tempParticle.y * scale;
+      
+      projected.push({
+        x: projX,
+        y: projY,
+        z: tempParticle.z,
+        scale: scale,
+        radius: p.radius * scale
+      });
+    }
+    
+    // Draw lines between particles close in 3D
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dz = particles[i].z - particles[j].z;
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        
+        if (dist < maxDistance) {
+          const pi = projected[i];
+          const pj = projected[j];
+          
+          // Calculate opacity based on distance in 3D
+          const alpha = (1 - dist / maxDistance) * 0.18;
+          ctx.strokeStyle = `rgba(96, 165, 250, ${alpha * pi.scale * pj.scale})`;
+          ctx.lineWidth = 0.8 * pi.scale;
+          ctx.beginPath();
+          ctx.moveTo(pi.x, pi.y);
+          ctx.lineTo(pj.x, pj.y);
+          ctx.stroke();
+        }
+      }
+    }
+    
+    // Draw particles
+    for (let i = 0; i < projected.length; i++) {
+      const p = projected[i];
+      const alpha = (p.z + 400) / 800; // Depth cueing
+      ctx.fillStyle = `rgba(96, 165, 250, ${alpha * 0.7})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    requestAnimationFrame(draw);
+  }
+  
+  requestAnimationFrame(draw);
+})();

@@ -309,6 +309,17 @@ export default function LandingPage() {
           <div className="space-y-4">
             <span className="font-bold text-white text-lg">CommunityPulse AI</span>
             <p className="text-sm leading-relaxed">AI-powered Decision Intelligence Platform powered by Google Cloud & NVIDIA GPU acceleration.</p>
+            <div className="flex gap-3 flex-wrap mt-4 text-xs">
+              <a href="https://www.linkedin.com/in/ranjeet-kumar-78a45120b/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+              <span className="text-slate-700">|</span>
+              <a href="https://github.com/Ranjeet7680" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+              <span className="text-slate-700">|</span>
+              <a href="https://www.youtube.com/@Ranjeet_Kumar68" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">YouTube</a>
+              <span className="text-slate-700">|</span>
+              <a href="https://x.com/Ranjeet21653458" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">X</a>
+              <span className="text-slate-700">|</span>
+              <a href="mailto:rajranjeet7680@gmail.com" className="hover:text-white transition-colors">Gmail</a>
+            </div>
           </div>
           <div>
             <h4 className="font-bold text-white mb-4 text-sm">Company</h4>
@@ -323,7 +334,7 @@ export default function LandingPage() {
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
               <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">GitHub</a></li>
+              <li><a href="https://github.com/Ranjeet7680/CommunityPulse-AI-Decision-Intelligence-Platform.git" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
             </ul>
           </div>
           <div>

@@ -144,7 +144,7 @@ function toggleTheme() {
     if (btn) {
       const btnIcon = State.mapStyle === 'dark' ? 'wb_sunny' : 'dark_mode';
       const label = State.mapStyle === 'dark' ? 'Day Map' : 'Dark Map';
-      btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;">${btnIcon}</span>${label}`;
+      btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;">${btnIcon}</span><span class="hide-mobile">${label}</span>`;
     }
   }
 
@@ -232,6 +232,39 @@ function showApp() {
 
 function navigateTo(view) {
   State.currentView = view;
+  
+  // Hide FAB container on map and chatbot pages to prevent overlap with controls/inputs
+  const fab = $('#app-fab-container');
+  if (fab) {
+    if (view === 'maps' || view === 'ai-assistant') {
+      fab.style.display = 'none';
+      const chat = $('#floating-chat');
+      if (chat) chat.style.display = 'none';
+    } else {
+      fab.style.display = 'flex';
+    }
+  }
+
+  // Adjust padding of main container for full-screen map & chat views
+  const mainContent = $('.main-content');
+  if (mainContent) {
+    if (view === 'maps' || view === 'ai-assistant') {
+      mainContent.classList.add('no-padding');
+    } else {
+      mainContent.classList.remove('no-padding');
+    }
+  }
+
+  // Close mobile sidebar and remove backdrop overlay when navigating
+  const sidebar = $('#sidebar');
+  if (sidebar) {
+    sidebar.classList.remove('mobile-open');
+  }
+  const sidebarBackdrop = $('#sidebar-backdrop');
+  if (sidebarBackdrop) {
+    sidebarBackdrop.remove();
+  }
+
   $$('.nav-item').forEach(n => {
     n.classList.toggle('active', n.dataset.view === view);
   });
@@ -569,7 +602,7 @@ function toggleSidebar() {
       if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'sidebar-backdrop';
-        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:999;backdrop-filter:blur(2px);';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1001;backdrop-filter:blur(2px);';
         overlay.onclick = () => {
           sidebar.classList.remove('mobile-open');
           overlay.remove();
@@ -735,7 +768,15 @@ function drawLineChart(canvas, datasets, labels, opts = {}) {
     // Fill
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
-    pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i];
+      const p1 = pts[i + 1];
+      const cp1x = p0.x + (p1.x - p0.x) / 3;
+      const cp1y = p0.y;
+      const cp2x = p0.x + 2 * (p1.x - p0.x) / 3;
+      const cp2y = p1.y;
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+    }
     ctx.lineTo(pts[pts.length - 1].x, pad.top + chartH);
     ctx.lineTo(pts[0].x, pad.top + chartH);
     ctx.closePath();
@@ -748,11 +789,25 @@ function drawLineChart(canvas, datasets, labels, opts = {}) {
     // Line
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
-    pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i];
+      const p1 = pts[i + 1];
+      const cp1x = p0.x + (p1.x - p0.x) / 3;
+      const cp1y = p0.y;
+      const cp2x = p0.x + 2 * (p1.x - p0.x) / 3;
+      const cp2y = p1.y;
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+    }
     ctx.strokeStyle = dataset.color;
     ctx.lineWidth = 2.5;
     ctx.lineJoin = 'round';
+    if (dataset.dashed) {
+      ctx.setLineDash([5, 5]);
+    } else {
+      ctx.setLineDash([]);
+    }
     ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash for subsequent drawings
 
     // Dots
     pts.forEach(p => {
@@ -818,7 +873,12 @@ function drawBarChart(canvas, data, labels, colors, opts = {}) {
     ctx.lineTo(x, y + r);
     ctx.quadraticCurveTo(x, y, x + r, y);
     ctx.closePath();
-    ctx.fillStyle = color;
+    
+    // Gradient fill for bar
+    const barGrad = ctx.createLinearGradient(x, y, x, y + barH);
+    barGrad.addColorStop(0, color);
+    barGrad.addColorStop(1, color + '60'); // slightly transparent at the base
+    ctx.fillStyle = barGrad;
     ctx.fill();
 
     // Label
@@ -848,15 +908,12 @@ function drawDonutChart(canvas, data, colors) {
   data.forEach((val, i) => {
     const angle = (val / total) * (Math.PI * 2 - gap * data.length);
     ctx.beginPath();
-    ctx.moveTo(cx, cy);
+    // Outer arc
     ctx.arc(cx, cy, r, start + gap / 2, start + angle + gap / 2);
+    // Inner arc in reverse direction
+    ctx.arc(cx, cy, innerR, start + angle + gap / 2, start + gap / 2, true);
     ctx.closePath();
     ctx.fillStyle = colors[i];
-    ctx.fill();
-    // Inner hole
-    ctx.beginPath();
-    ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
-    ctx.fillStyle = State.theme === 'dark' ? '#161B27' : '#FFFFFF';
     ctx.fill();
     start += angle + gap;
   });
@@ -868,74 +925,74 @@ State.mapLevel = 'dhanbad'; // default: street-level Dhanbad
 
 const MAP_LEVELS = {
   world: {
-    name: '🌍 World Overview',
+    name: 'World Overview',
     locationName: 'World',
     sub: 'All Continents',
     stats: { 'Continents': '7', 'Countries Monitored': '54', 'Active Alerts': '1,240', 'Data Sources': '10,000+', 'Coverage': 'Global' },
     zoom: 0.4,
     coords: [20.0, 0.0],
     leafletZoom: 2,
-    label: '🌍 World — Global Overview',
+    label: 'World — Global Overview',
   },
-  aria: { // Keep the typo 'aria' or support both 'asia' and 'aria' just in case
-    name: '🌏 Asia Region',
+  aria: {
+    name: 'Asia Region',
     locationName: 'Asia',
     sub: 'Regional View',
     stats: { 'Countries': '48', 'Cities Monitored': '3,200+', 'Active Alerts': '280', 'Sensors Online': '148,000', 'Coverage': 'Asia Pacific' },
     zoom: 0.6,
     coords: [34.0, 100.0],
     leafletZoom: 3,
-    label: '🌏 Asia — Regional View',
+    label: 'Asia — Regional View',
   },
   asia: {
-    name: '🌏 Asia Region',
+    name: 'Asia Region',
     locationName: 'Asia',
     sub: 'Regional View',
     stats: { 'Countries': '48', 'Cities Monitored': '3,200+', 'Active Alerts': '280', 'Sensors Online': '148,000', 'Coverage': 'Asia Pacific' },
     zoom: 0.6,
     coords: [34.0, 100.0],
     leafletZoom: 3,
-    label: '🌏 Asia — Regional View',
+    label: 'Asia — Regional View',
   },
   india: {
-    name: '🇮🇳 India',
+    name: 'India',
     locationName: 'India',
     sub: 'National View',
     stats: { 'States': '28', 'Districts': '780', 'Active Alerts': '64', 'Sensors Online': '42,600', 'Population': '1.4 Billion' },
     zoom: 0.8,
     coords: [20.5937, 78.9629],
     leafletZoom: 5,
-    label: '🇮🇳 India — National View',
+    label: 'India — National View',
   },
   jharkhand: {
-    name: '⛏ Jharkhand',
+    name: 'Jharkhand',
     locationName: 'Jharkhand, India',
     sub: 'India · Asia · World',
     stats: { 'Districts': '24', 'Cities': '14', 'Active Alerts': '8', 'Sensors Online': '2,840', 'Population': '3.84 Crore' },
     zoom: 1.0,
     coords: [23.3441, 85.3096],
     leafletZoom: 8,
-    label: '⛏ Jharkhand — State Overview',
+    label: 'Jharkhand — State Overview',
   },
   dhanbad: {
-    name: '📍 Dhanbad City',
+    name: 'Dhanbad City',
     locationName: 'Dhanbad, Jharkhand',
     sub: 'India · Asia · World',
     stats: { 'Population': '12.6 Lakh', 'Districts': '6 Active Zones', 'Alert Markers': '4 Critical', 'Sensors Online': '842 / 856', 'Air Quality (AQI)': '147 – Moderate', 'Last Update': 'Just now' },
     zoom: 1.3,
     coords: [23.7957, 86.4304],
     leafletZoom: 12,
-    label: '📍 Dhanbad City — Street Detail',
+    label: 'Dhanbad City — Street Detail',
   },
   ism_dhanbad: {
-    name: '🎓 ISM Dhanbad',
+    name: 'IIT (ISM) Dhanbad',
     locationName: 'IIT (ISM) Dhanbad',
     sub: 'Dhanbad · Jharkhand · India',
     stats: { 'Students': '8,500+', 'Campus Area': '393 Acres', 'Active Alerts': '1 Critical', 'Sensors Online': '112 / 115', 'Air Quality (AQI)': '118 – Moderate', 'Last Update': 'Just now' },
     zoom: 1.6,
     coords: [23.8142, 86.4412],
     leafletZoom: 16,
-    label: '🎓 IIT (ISM) Dhanbad — Campus Detail',
+    label: 'IIT (ISM) Dhanbad — Campus Detail',
   },
 };
 
@@ -967,7 +1024,14 @@ function setMapLevel(level) {
   }
   
   const labelEl = $('#map-level-label');
-  if (labelEl) labelEl.textContent = cfg.label;
+  if (labelEl) {
+    let iconName = 'location_on';
+    if (level === 'world' || level === 'asia' || level === 'aria') iconName = 'public';
+    else if (level === 'india') iconName = 'flag';
+    else if (level === 'jharkhand') iconName = 'construction';
+    else if (level === 'ism_dhanbad') iconName = 'school';
+    labelEl.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;vertical-align:middle;margin-right:6px;color:var(--blue)">${iconName}</span>${cfg.label}`;
+  }
   
   // Pan and Zoom Leaflet map
   if (window.leafletMap && cfg.coords) {
@@ -1039,7 +1103,7 @@ function renderMapView() {
         if (btn) {
           const btnIcon = State.mapStyle === 'dark' ? 'wb_sunny' : 'dark_mode';
           const label = State.mapStyle === 'dark' ? 'Day Map' : 'Dark Map';
-          btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;">${btnIcon}</span>${label}`;
+          btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;">${btnIcon}</span><span class="hide-mobile">${label}</span>`;
         }
 
         L.control.scale({ position: 'bottomright' }).addTo(window.leafletMap);
@@ -1240,7 +1304,7 @@ function toggleMapStyle() {
   if (btn) {
     const icon = State.mapStyle === 'dark' ? 'wb_sunny' : 'dark_mode';
     const label = State.mapStyle === 'dark' ? 'Day Map' : 'Dark Map';
-    btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;">${icon}</span>${label}`;
+    btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:16px;">${icon}</span><span class="hide-mobile">${label}</span>`;
   }
   showToast(`Switched map style to ${State.mapStyle} mode`, 'success');
 }
@@ -1875,10 +1939,15 @@ function renderAnalytics() {
     const trendCanvas = $('#analytics-trend');
     if (trendCanvas) {
       trendCanvas.height = 240;
-      drawLineChart(trendCanvas, [
+      const datasets = [
         { data: [55, 60, 58, 72, 65, 80, 75, 85, 82, 90, 87, 94], color: CHART_BLUE },
         { data: [40, 45, 50, 48, 58, 62, 68, 65, 72, 70, 76, 80], color: CHART_GREEN },
-      ], ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+      ];
+      if (typeof compareModeActive !== 'undefined' && compareModeActive) {
+        datasets.push({ data: [48, 52, 53, 62, 60, 70, 68, 75, 74, 82, 80, 88], color: CHART_BLUE, dashed: true });
+        datasets.push({ data: [34, 38, 42, 40, 50, 55, 60, 58, 64, 63, 68, 72], color: CHART_GREEN, dashed: true });
+      }
+      drawLineChart(trendCanvas, datasets, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
     }
 
     const barCanvas = $('#analytics-bar');
@@ -2423,7 +2492,16 @@ function drawDatasetChart() {
     if (chartType === 'area') {
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pad.top + chartH);
-      pts.forEach(pt => ctx.lineTo(pt.x, pt.y));
+      ctx.lineTo(pts[0].x, pts[0].y);
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[i];
+        const p1 = pts[i + 1];
+        const cp1x = p0.x + (p1.x - p0.x) / 3;
+        const cp1y = p0.y;
+        const cp2x = p0.x + 2 * (p1.x - p0.x) / 3;
+        const cp2y = p1.y;
+        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+      }
       ctx.lineTo(pts[pts.length - 1].x, pad.top + chartH);
       ctx.closePath();
       const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
@@ -2436,7 +2514,15 @@ function drawDatasetChart() {
     // Line Path
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
-    pts.slice(1).forEach(pt => ctx.lineTo(pt.x, pt.y));
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i];
+      const p1 = pts[i + 1];
+      const cp1x = p0.x + (p1.x - p0.x) / 3;
+      const cp1y = p0.y;
+      const cp2x = p0.x + 2 * (p1.x - p0.x) / 3;
+      const cp2y = p1.y;
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p1.x, p1.y);
+    }
     ctx.strokeStyle = '#1A73E8';
     ctx.lineWidth = 2.5;
     ctx.lineJoin = 'round';
@@ -2633,6 +2719,9 @@ function appendAIMessage(text, showChart = false, confidence = null, sources = n
         <button onclick="exportChat()" class="btn btn-secondary btn-sm">
           <span class="material-symbols-rounded" style="font-size:14px">download</span>Export
         </button>
+        <button class="btn btn-ghost btn-sm btn-speak" title="Read response aloud">
+          <span class="material-symbols-rounded" style="font-size:14px">volume_up</span>Speak
+        </button>
         <button class="btn btn-ghost btn-sm">
           <span class="material-symbols-rounded" style="font-size:14px">thumb_up</span>
         </button>
@@ -2643,6 +2732,11 @@ function appendAIMessage(text, showChart = false, confidence = null, sources = n
     </div>`;
   container.appendChild(msg);
   container.scrollTop = container.scrollHeight;
+
+  const speakBtn = msg.querySelector('.btn-speak');
+  if (speakBtn) {
+    speakBtn.addEventListener('click', () => speakText(speakBtn, text));
+  }
 
   if (showChart) {
     setTimeout(() => {
@@ -2819,10 +2913,10 @@ function switchSettingsPanel(panel) {
 function initLandingAnimations() {
   // Stats counters
   const stats = [
-    { id: 'stat-communities', val: 2400, suffix: '+' },
-    { id: 'stat-datasets', val: 18700, suffix: '+' },
+    { id: 'stat-communities', val: 2400, suffix: '' },
+    { id: 'stat-datasets', val: 18700, suffix: '' },
     { id: 'stat-decisions', val: 4200000, suffix: '' },
-    { id: 'stat-predictions', val: 98, suffix: '%' },
+    { id: 'stat-predictions', val: 98, suffix: '' },
   ];
   stats.forEach(s => {
     const el = $(`#${s.id}`);
@@ -3630,7 +3724,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tour) tour.classList.add('hidden');
   };
 
-  window.nextOnboardingStep = function() {
+  window.nextTourStep = function() {
     tourStepIndex++;
     if (tourStepIndex < TOUR_STEPS.length) {
       showTourStep(tourStepIndex);
@@ -3771,3 +3865,517 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 1000);
 });
+
+// Interactive 3D Particle Background for Onboarding
+(function() {
+  const canvas = document.getElementById('onboarding-bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let width, height;
+  let particles = [];
+  const numParticles = 80;
+  const focalLength = 300;
+  
+  function resize() {
+    width = canvas.width = canvas.offsetWidth;
+    height = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  
+  // Initialize particles in a 3D box
+  for (let i = 0; i < numParticles; i++) {
+    particles.push({
+      x: (Math.random() - 0.5) * 800,
+      y: (Math.random() - 0.5) * 800,
+      z: (Math.random() - 0.5) * 800,
+      vx: (Math.random() - 0.5) * 1.5,
+      vy: (Math.random() - 0.5) * 1.5,
+      vz: (Math.random() - 0.5) * 1.5,
+      radius: Math.random() * 2 + 1
+    });
+  }
+  
+  let mouseX = 0, mouseY = 0;
+  let targetRotationX = 0, targetRotationY = 0;
+  let rotationX = 0, rotationY = 0;
+  
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX - window.innerWidth / 2;
+    mouseY = e.clientY - window.innerHeight / 2;
+    targetRotationY = (mouseX / (window.innerWidth / 2)) * 0.25;
+    targetRotationX = -(mouseY / (window.innerHeight / 2)) * 0.25;
+  });
+  
+  function rotateY(particle, angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const x = particle.x * cos - particle.z * sin;
+    const z = particle.z * cos + particle.x * sin;
+    particle.x = x;
+    particle.z = z;
+  }
+  
+  function rotateX(particle, angle) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const y = particle.y * cos - particle.z * sin;
+    const z = particle.z * cos + particle.y * sin;
+    particle.y = y;
+    particle.z = z;
+  }
+  
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    
+    // Smoothly interpolate rotation toward target (mouse response)
+    rotationX += (targetRotationX - rotationX) * 0.05;
+    rotationY += (targetRotationY - rotationY) * 0.05;
+    
+    // Draw connections
+    const projected = [];
+    const maxDistance = 220;
+    
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      
+      // Copy coordinates to rotate
+      let rx = p.x;
+      let ry = p.y;
+      let rz = p.z;
+      
+      // Update position
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+      
+      // Bounce inside boundary box
+      const boxSize = 400;
+      if (Math.abs(p.x) > boxSize) p.vx *= -1;
+      if (Math.abs(p.y) > boxSize) p.vy *= -1;
+      if (Math.abs(p.z) > boxSize) p.vz *= -1;
+      
+      // Apply mouse-based rotation plus a constant ambient drift
+      const tempParticle = { x: rx, y: ry, z: rz };
+      rotateY(tempParticle, rotationY + 0.0006);
+      rotateX(tempParticle, rotationX + 0.0003);
+      
+      // Project to 2D
+      const scale = focalLength / (focalLength + tempParticle.z + 500);
+      const projX = width / 2 + tempParticle.x * scale;
+      const projY = height / 2 + tempParticle.y * scale;
+      
+      projected.push({
+        x: projX,
+        y: projY,
+        z: tempParticle.z,
+        scale: scale,
+        radius: p.radius * scale
+      });
+    }
+    
+    // Draw lines between particles close in 3D
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dz = particles[i].z - particles[j].z;
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        
+        if (dist < maxDistance) {
+          const pi = projected[i];
+          const pj = projected[j];
+          
+          // Calculate opacity based on distance in 3D
+          const alpha = (1 - dist / maxDistance) * 0.18;
+          ctx.strokeStyle = `rgba(96, 165, 250, ${alpha * pi.scale * pj.scale})`;
+          ctx.lineWidth = 0.8 * pi.scale;
+          ctx.beginPath();
+          ctx.moveTo(pi.x, pi.y);
+          ctx.lineTo(pj.x, pj.y);
+          ctx.stroke();
+        }
+      }
+    }
+    
+    // Draw particles
+    for (let i = 0; i < projected.length; i++) {
+      const p = projected[i];
+      const alpha = (p.z + 400) / 800; // Depth cueing
+      ctx.fillStyle = `rgba(96, 165, 250, ${alpha * 0.7})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    requestAnimationFrame(draw);
+  }
+  
+  requestAnimationFrame(draw);
+})();
+
+/* =========================================================
+   VOICE SYSTEMS, DICTATION, TTS, COMPARE & INTERACTION
+   ========================================================= */
+
+// Speech-to-Text (STT) using standard webkitSpeechRecognition
+let recognition = null;
+let isListening = false;
+
+function toggleVoiceInput() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showToast('Speech Recognition API not supported in this browser. Please use Chrome.', 'error');
+    return;
+  }
+
+  const micBtn = $('#voice-input-btn');
+  const chatInput = $('#chat-input');
+  if (!micBtn || !chatInput) return;
+
+  if (isListening) {
+    if (recognition) recognition.stop();
+    return;
+  }
+
+  if (!recognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      isListening = true;
+      micBtn.classList.add('listening-pulse');
+      showToast('Listening... Speak now!', 'info');
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      chatInput.value = (chatInput.value + ' ' + transcript).trim();
+      chatInput.dispatchEvent(new Event('input')); // Auto-resize text area
+      showToast('Voice input received!', 'success');
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      showToast(`Speech recognition error: ${event.error}`, 'error');
+      stopListeningState();
+    };
+
+    recognition.onend = () => {
+      stopListeningState();
+    };
+  }
+
+  try {
+    recognition.start();
+  } catch (err) {
+    console.error('Start speech recognition failed:', err);
+  }
+}
+
+function stopListeningState() {
+  isListening = false;
+  const micBtn = $('#voice-input-btn');
+  if (micBtn) {
+    micBtn.classList.remove('listening-pulse');
+  }
+}
+
+// Text-to-Speech (TTS) using speechSynthesis
+let currentUtterance = null;
+function speakText(btn, text) {
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    if (currentUtterance && currentUtterance.btn === btn) {
+      btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:14px">volume_up</span>Speak`;
+      currentUtterance = null;
+      return;
+    }
+  }
+
+  // Reset all other speak buttons to default state
+  $$('.btn-speak').forEach(b => {
+    b.innerHTML = `<span class="material-symbols-rounded" style="font-size:14px">volume_up</span>Speak`;
+  });
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.btn = btn;
+  currentUtterance = utterance;
+
+  utterance.onstart = () => {
+    btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:14px;color:var(--red)">volume_off</span>Stop`;
+  };
+
+  utterance.onend = () => {
+    btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:14px">volume_up</span>Speak`;
+    if (currentUtterance === utterance) currentUtterance = null;
+  };
+
+  utterance.onerror = () => {
+    btn.innerHTML = `<span class="material-symbols-rounded" style="font-size:14px">volume_up</span>Speak`;
+    if (currentUtterance === utterance) currentUtterance = null;
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// Compare mode logic for overlaying historical lines on trend charts
+let compareModeActive = false;
+function toggleCompareMode() {
+  compareModeActive = !compareModeActive;
+  const btn = $('.analytics-filters button');
+  if (btn) {
+    btn.classList.toggle('btn-primary', compareModeActive);
+    btn.classList.toggle('btn-secondary', !compareModeActive);
+  }
+  showToast(compareModeActive ? 'Compare mode activated (overlaying 2025 benchmark data)' : 'Compare mode deactivated', 'info');
+  renderAnalytics();
+}
+
+// Export CSV for analytics
+function exportAnalyticsCSV() {
+  showToast('Generating analytics CSV export...', 'info');
+  setTimeout(() => {
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "Month,Infrastructure,Environment,Safety,Health\n"
+      + "Jan,45,28,18,12\n"
+      + "Feb,48,29,19,13\n"
+      + "Mar,52,31,17,11\n"
+      + "Apr,49,30,20,12\n"
+      + "May,55,33,18,14\n"
+      + "Jun,58,34,16,15\n"
+      + "Jul,62,36,19,13\n"
+      + "Aug,60,35,17,12\n"
+      + "Sep,64,38,18,14\n"
+      + "Oct,66,39,15,13\n"
+      + "Nov,70,41,17,12\n"
+      + "Dec,72,42,18,14";
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "communitypulse_analytics_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('✓ CSV file downloaded successfully!', 'success');
+  }, 800);
+}
+
+// Refresh predictions model
+function refreshPredictions(button) {
+  if (button) {
+    button.disabled = true;
+    const icon = button.querySelector('.material-symbols-rounded');
+    if (icon) icon.style.animation = 'spin 1s linear infinite';
+  }
+  showToast('Re-running predictive models with Vertex AI...', 'info');
+  setTimeout(() => {
+    $$('.confidence-ring').forEach(ring => {
+      const baseVal = parseInt(ring.dataset.val);
+      const noise = Math.floor(Math.random() * 7) - 3; // -3 to +3
+      const newVal = Math.max(10, Math.min(100, baseVal + noise));
+      ring.dataset.val = newVal;
+      const valText = ring.querySelector('.confidence-val');
+      if (valText) valText.textContent = newVal + '%';
+    });
+    renderPredictions();
+    if (button) {
+      button.disabled = false;
+      const icon = button.querySelector('.material-symbols-rounded');
+      if (icon) icon.style.animation = '';
+    }
+    showToast('✓ Predictions successfully updated!', 'success');
+  }, 1200);
+}
+
+// AI Workflow Builder
+function openWorkflowCreator() {
+  let modal = $('#workflow-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'workflow-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    modal.innerHTML = `
+      <div class="card" style="width:460px;padding:24px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-lg);display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="font-size:16px;font-weight:700;">Create AI Workflow</h3>
+          <button class="btn btn-ghost btn-icon" onclick="$('#workflow-modal').remove()">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px;">Describe the workflow you want to build:</label>
+          <textarea id="workflow-desc" class="input" placeholder="e.g. Daily air quality check at 8 AM, if AQI > 150 send alert to team" style="width:100%;height:80px;resize:none;padding:10px;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--text-primary);outline:none;font-family:var(--font-sans);font-size:13px;"></textarea>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn btn-secondary" onclick="$('#workflow-modal').remove()">Cancel</button>
+          <button class="btn btn-primary" onclick="submitNewWorkflow()">Generate Workflow</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+}
+
+function submitNewWorkflow() {
+  const descInput = $('#workflow-desc');
+  if (!descInput) return;
+  const desc = descInput.value.trim();
+  if (!desc) {
+    showToast('Please enter a description for the workflow', 'warn');
+    return;
+  }
+
+  showToast('AI is planning workflow steps...', 'info');
+  $('#workflow-modal').remove();
+
+  setTimeout(() => {
+    const title = desc.split(',')[0].substring(0, 30) || 'Custom AI Workflow';
+    const steps = desc.includes('if') 
+      ? `Trigger → Detect ${desc.split('if')[0].trim()} → ${desc.split('if')[1].trim()}` 
+      : `Trigger → ${desc} → Log action → Complete`;
+
+    const grid = $('#view-workflow > div:last-child');
+    if (grid) {
+      const newCard = document.createElement('div');
+      newCard.className = 'card';
+      newCard.style.cssText = 'padding:20px;animation:fadeSlideIn 0.4s var(--t-spring) both;';
+      
+      newCard.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="material-symbols-rounded" style="color:var(--blue);font-variation-settings:'FILL' 1">settings_suggest</span>
+            <div style="font-weight:600">${title}</div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked onchange="toggleWorkflowStatus(this, '${title}')"/><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">${steps}</div>
+        <div style="display:flex;gap:8px"><span class="badge badge-green">Active</span><span class="badge badge-blue">Created just now</span></div>
+      `;
+      grid.insertBefore(newCard, grid.lastElementChild);
+      showToast(`✓ Workflow "${title}" successfully built by AI!`, 'success');
+    }
+  }, 1500);
+}
+
+function toggleWorkflowStatus(checkbox, name) {
+  const active = checkbox.checked;
+  const card = checkbox.closest('.card');
+  if (!card) return;
+  const badge = card.querySelector('.badge');
+  if (active) {
+    if (badge) {
+      badge.className = 'badge badge-green';
+      badge.textContent = 'Active';
+    }
+    showToast(`Workflow "${name}" activated`, 'success');
+  } else {
+    if (badge) {
+      badge.className = 'badge badge-gray';
+      badge.textContent = 'Inactive';
+    }
+    showToast(`Workflow "${name}" deactivated`, 'warn');
+  }
+}
+
+// Emergency advisories dispatch
+function prepareAdvisory() {
+  let modal = $('#advisory-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'advisory-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    modal.innerHTML = `
+      <div class="card" style="width:480px;padding:24px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-lg);display:flex;flex-direction:column;gap:16px;animation:fadeSlideIn 0.3s ease both;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;">
+            <span class="material-symbols-rounded" style="color:var(--yellow)">healing</span>
+            Draft Health Advisory
+          </h3>
+          <button class="btn btn-ghost btn-icon" onclick="$('#advisory-modal').remove()">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <div style="font-size:13px;line-height:1.6;color:var(--text-primary)">
+          <strong>Target Area:</strong> Zone 7, sectors 2 & 3<br>
+          <strong>Issue:</strong> Seasonal Influenza Spikes (Vertex AI projection)<br><br>
+          <strong>Suggested Actions:</strong>
+          <ul style="margin-left:20px;margin-top:6px;display:flex;flex-direction:column;gap:4px;">
+            <li>Recommend flu vaccinations for elderly residents.</li>
+            <li>Distribute masks to local community primary schools.</li>
+            <li>Increase sanitation cycles in public transport facilities.</li>
+          </ul>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn btn-secondary" onclick="$('#advisory-modal').remove()">Cancel</button>
+          <button class="btn btn-primary" onclick="publishAdvisory()">Publish Advisory</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+}
+
+function publishAdvisory() {
+  $('#advisory-modal').remove();
+  showToast('✓ Public Health Advisory successfully published to regional channels!', 'success');
+}
+
+function activateEnergyProtocol(btn) {
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  btn.textContent = 'Activating...';
+  showToast('Connecting to power distribution grid...', 'info');
+
+  setTimeout(() => {
+    const overlay = el('div', '', '');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(52, 168, 83, 0.15);z-index:9999;pointer-events:none;transition:opacity 1s ease-out;';
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 1000);
+    }, 200);
+
+    btn.textContent = 'Protocol Active';
+    btn.className = 'btn btn-secondary w-full btn-sm';
+    showToast('✓ Demand-response protocol successfully activated. Grid load balanced.', 'success');
+  }, 1500);
+}
+
+function updatePatrolSchedule(btn) {
+  showToast('Recalculating patrol dispatch routes...', 'info');
+  setTimeout(() => {
+    showToast('✓ Dispatch updated! 2x mobile patrol routes added in Grid G-7 & H-3.', 'success');
+    navigateTo('maps');
+  }, 1000);
+}
+
+function applyWasteSchedule(btn) {
+  showToast('Applying route optimizations for Zones B, D, F...', 'info');
+  setTimeout(() => {
+    showToast('✓ Optimization schedule applied. Fuel savings ₹18,400 initiated.', 'success');
+  }, 1200);
+}
+
+// Collapsible GIS Map info card for mobile screen estates
+function toggleMapInfoPanel() {
+  const statsList = $('#map-stats-list');
+  const actionRow = $('#map-info-panel button')?.parentNode;
+  const toggleBtnIcon = $('#map-toggle-panel-btn span');
+  
+  if (statsList) {
+    if (statsList.style.display === 'none') {
+      statsList.style.display = 'flex';
+      if (actionRow) actionRow.style.display = 'flex';
+      if (toggleBtnIcon) toggleBtnIcon.textContent = 'expand_more';
+    } else {
+      statsList.style.display = 'none';
+      if (actionRow) actionRow.style.display = 'none';
+      if (toggleBtnIcon) toggleBtnIcon.textContent = 'expand_less';
+    }
+  }
+}
